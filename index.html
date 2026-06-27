@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ISP OS AIM — Asset & Inventory Management</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.8.0/dist/tabler-icons.min.css"/>
+<style>
+:root{
+  --blue:#1746A2;--blue-lt:#EBF2FF;--blue-md:#2563EB;
+  --green:#0F9E6E;--green-lt:#E6F9F2;
+  --orange:#EA580C;--orange-lt:#FFF2EA;
+  --purple:#7C3AED;--purple-lt:#F3EEFF;
+  --red:#DC2626;--red-lt:#FEF2F2;
+  --amber:#D97706;--amber-lt:#FFFBEB;
+  --gray0:#F8F9FC;--gray1:#F1F3F9;--gray2:#E2E8F0;--gray3:#94A3B8;--gray4:#64748B;--gray5:#334155;--gray6:#0F172A;
+  --white:#fff;
+  --sidebar:220px;
+  --radius:10px;--radius-sm:6px;
+  --shadow:0 1px 4px #0001,0 2px 12px #0000000d;
+  --shadow-md:0 4px 20px #00000014;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;background:var(--gray0);color:var(--gray6);height:100vh;overflow:hidden}
+
+/* ── Layout ── */
+.shell{display:flex;height:100vh}
+
+/* ── Sidebar ── */
+.sidebar{width:var(--sidebar);background:var(--gray6);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.brand{padding:18px 16px 14px;border-bottom:1px solid #1e293b;display:flex;align-items:center;gap:10px}
+.brand-logo{width:38px;height:38px;background:var(--blue-md);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-logo i{color:#fff;font-size:20px}
+.brand-name{font-size:15px;font-weight:700;color:#fff;line-height:1.2}
+.brand-sub{font-size:10px;color:#94A3B8;line-height:1.3;margin-top:2px}
+.nav{flex:1;padding:10px 8px;overflow-y:auto}
+.nav::-webkit-scrollbar{display:none}
+.nav-group{font-size:10px;font-weight:600;color:#475569;letter-spacing:.08em;padding:10px 8px 4px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:12.5px;color:#94A3B8;margin-bottom:1px;transition:.15s;user-select:none;justify-content:space-between}
+.nav-item:hover{background:#1e293b;color:#e2e8f0}
+.nav-item.active{background:var(--blue-md);color:#fff}
+.nav-item.active i{color:#fff}
+.nav-left{display:flex;align-items:center;gap:9px}
+.nav-item i{font-size:16px;flex-shrink:0}
+.nav-chevron{font-size:12px;color:#475569}
+.nav-badge{background:#EF4444;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px}
+.sidebar-bottom{padding:12px 8px;border-top:1px solid #1e293b}
+.quick-access{padding:0 8px 8px}
+.qa-label{font-size:10px;font-weight:600;color:#475569;letter-spacing:.08em;text-transform:uppercase;padding:8px 2px 6px}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.qa-btn{display:flex;align-items:center;gap:6px;background:#1e293b;border:none;border-radius:7px;padding:8px 10px;color:#94A3B8;font-size:11px;cursor:pointer;transition:.15s;font-family:inherit}
+.qa-btn:hover{background:#334155;color:#e2e8f0}
+.qa-btn i{font-size:14px;flex-shrink:0}
+
+/* ── Main ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* ── Topbar ── */
+.topbar{background:var(--white);border-bottom:1px solid var(--gray2);padding:0 24px;height:58px;display:flex;align-items:center;gap:16px;flex-shrink:0;box-shadow:var(--shadow)}
+.topbar-title{font-size:17px;font-weight:700;color:var(--gray6)}
+.topbar-sub{font-size:11px;color:var(--gray3);margin-top:1px}
+.search-wrap{flex:1;max-width:360px;margin:0 auto}
+.search-box{width:100%;display:flex;align-items:center;gap:8px;background:var(--gray1);border:1px solid var(--gray2);border-radius:8px;padding:8px 14px;font-size:12px;color:var(--gray4);cursor:pointer;transition:.15s}
+.search-box:hover{border-color:var(--blue-md)}
+.search-box i{font-size:15px;color:var(--gray3)}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.date-range{display:flex;align-items:center;gap:6px;background:var(--gray1);border:1px solid var(--gray2);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--gray5);cursor:pointer;white-space:nowrap}
+.date-range i{font-size:14px;color:var(--gray3)}
+.topbar-btn{background:var(--blue-md);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;transition:.15s}
+.topbar-btn:hover{background:var(--blue)}
+.topbar-btn i{font-size:14px}
+.icon-btn{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray4);border:1px solid var(--gray2);background:var(--white);transition:.15s;position:relative;flex-shrink:0}
+.icon-btn:hover{background:var(--gray1)}
+.notif-dot::after{content:'5';position:absolute;top:-3px;right:-3px;width:16px;height:16px;background:#EF4444;border-radius:50%;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center}
+.user-chip{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 8px;border-radius:8px;transition:.15s}
+.user-chip:hover{background:var(--gray1)}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:var(--blue-lt);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--blue-md);flex-shrink:0}
+.user-name{font-size:12px;font-weight:600;color:var(--gray6)}
+.user-role{font-size:10px;color:var(--gray3)}
+
+/* ── Pages ── */
+.page{display:none;flex:1;overflow-y:auto;padding:20px 24px;flex-direction:column;gap:16px}
+.page.active{display:flex}
+.page::-webkit-scrollbar{width:4px}
+.page::-webkit-scrollbar-thumb{background:var(--gray2);border-radius:4px}
+
+/* ── Stat Cards ── */
+.stat-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.stat-card{background:var(--white);border:1px solid var(--gray2);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+.stat-card:hover{border-color:var(--blue-md);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0}
+.stat-card.blue::before{background:var(--blue-md)}
+.stat-card.green::before{background:var(--green)}
+.stat-card.purple::before{background:var(--purple)}
+.stat-card.orange::before{background:var(--orange)}
+.stat-card.amber::before{background:var(--amber)}
+.stat-card.red::before{background:var(--red)}
+.stat-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;flex-shrink:0}
+.stat-icon.blue{background:var(--blue-lt)}.stat-icon.blue i{color:var(--blue-md)}
+.stat-icon.green{background:var(--green-lt)}.stat-icon.green i{color:var(--green)}
+.stat-icon.purple{background:var(--purple-lt)}.stat-icon.purple i{color:var(--purple)}
+.stat-icon.orange{background:var(--orange-lt)}.stat-icon.orange i{color:var(--orange)}
+.stat-icon.amber{background:var(--amber-lt)}.stat-icon.amber i{color:var(--amber)}
+.stat-icon.red{background:var(--red-lt)}.stat-icon.red i{color:var(--red)}
+.stat-icon i{font-size:18px}
+.stat-label{font-size:10px;font-weight:600;color:var(--gray3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.stat-val{font-size:26px;font-weight:700;color:var(--gray6);line-height:1;margin-bottom:4px}
+.stat-sub{font-size:11px;color:var(--gray4)}
+.stat-trend{font-size:10px;font-weight:600;margin-top:4px;display:flex;align-items:center;gap:3px}
+.trend-up{color:var(--green)}.trend-dn{color:var(--red)}
+
+/* ── Grid layouts ── */
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.grid-2-1{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.grid-1-2{display:grid;grid-template-columns:1fr 2fr;gap:14px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+/* ── Panel ── */
+.panel{background:var(--white);border:1px solid var(--gray2);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--gray1)}
+.panel-title{font-size:13px;font-weight:600;color:var(--gray6);display:flex;align-items:center;gap:7px}
+.panel-title i{font-size:15px;color:var(--gray3)}
+.panel-action{font-size:11px;color:var(--blue-md);cursor:pointer;font-weight:500;background:none;border:none;padding:4px 10px;border-radius:6px;transition:.15s;font-family:inherit}
+.panel-action:hover{background:var(--blue-lt)}
+.panel-body{padding:14px 16px}
+.panel-body-np{padding:0}
+
+/* ── Table ── */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{background:var(--gray1);padding:9px 14px;text-align:left;font-size:10.5px;font-weight:600;color:var(--gray4);border-bottom:1px solid var(--gray2);white-space:nowrap;text-transform:uppercase;letter-spacing:.04em}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--gray1);color:var(--gray5);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--gray0)}
+
+/* ── Badge ── */
+.bdg{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.bdg-blue{background:var(--blue-lt);color:var(--blue)}
+.bdg-green{background:var(--green-lt);color:#065F46}
+.bdg-orange{background:var(--orange-lt);color:var(--orange)}
+.bdg-red{background:var(--red-lt);color:var(--red)}
+.bdg-amber{background:var(--amber-lt);color:var(--amber)}
+.bdg-gray{background:var(--gray1);color:var(--gray4)}
+.bdg-purple{background:var(--purple-lt);color:var(--purple)}
+
+/* ── Activity item ── */
+.act-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray1)}
+.act-item:last-child{border-bottom:none}
+.act-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.act-icon i{font-size:15px}
+.act-title{font-size:12px;font-weight:600;color:var(--gray6)}
+.act-sub{font-size:11px;color:var(--gray3);margin-top:1px}
+.act-time{font-size:10px;color:var(--gray3);flex-shrink:0;white-space:nowrap}
+
+/* ── Alert item ── */
+.alert-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray1)}
+.alert-item:last-child{border-bottom:none}
+.alert-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--amber-lt)}
+.alert-icon i{font-size:14px;color:var(--amber)}
+.alert-name{font-size:12px;font-weight:500;color:var(--gray6);flex:1}
+.alert-val{font-size:11px;color:var(--gray4)}
+
+/* ── Donut chart (SVG-based) ── */
+.donut-wrap{display:flex;align-items:center;gap:16px}
+.donut-legend{display:flex;flex-direction:column;gap:7px;min-width:140px}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--gray5)}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-val{margin-left:auto;font-weight:600;color:var(--gray6)}
+
+/* ── Bar chart ── */
+.bar-chart{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-label{width:110px;font-size:11px;color:var(--gray5);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:18px;background:var(--gray1);border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:4px;background:var(--blue-md);transition:width .6s ease}
+.bar-val{width:70px;font-size:11px;color:var(--gray5);font-weight:500;flex-shrink:0}
+
+/* ── Line chart (SVG) ── */
+.chart-wrap{width:100%;overflow:hidden}
+
+/* ── Request overview donut ── */
+.req-donut{display:flex;align-items:center;gap:16px}
+.req-legend{display:flex;flex-direction:column;gap:8px}
+.req-leg-item{display:flex;align-items:center;gap:8px;font-size:11px}
+.req-leg-dot{width:10px;height:10px;border-radius:50%}
+.req-leg-label{color:var(--gray5);flex:1}
+.req-leg-val{font-weight:600;color:var(--gray6)}
+
+/* ── Lifecycle pills ── */
+.lifecycle-row{display:flex;gap:10px;margin-top:4px}
+.lc-pill{flex:1;background:var(--gray1);border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:.15s}
+.lc-pill:hover{background:var(--gray2)}
+.lc-num{font-size:20px;font-weight:700}
+.lc-label{font-size:10px;color:var(--gray4);margin-top:2px}
+
+/* ── Quick reports ── */
+.qr-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:4px}
+.qr-btn{background:var(--gray1);border-radius:8px;padding:10px 8px;text-align:center;cursor:pointer;transition:.15s;border:1px solid var(--gray2)}
+.qr-btn:hover{background:var(--blue-lt);border-color:var(--blue-md)}
+.qr-btn i{font-size:20px;display:block;margin-bottom:5px}
+.qr-btn span{font-size:10px;color:var(--gray5);font-weight:500}
+
+/* ── Modal ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:#0009;z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:14px;padding:24px;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px #0004}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-title{font-size:15px;font-weight:600;color:var(--gray6);display:flex;align-items:center;gap:8px}
+.modal-close{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray4);border:1px solid var(--gray2);background:none;transition:.15s}
+.modal-close:hover{background:var(--gray1)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:11px;font-weight:600;color:var(--gray5);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid var(--gray2);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--gray6);background:var(--white);outline:none;transition:.15s;font-family:inherit}
+.form-group input:focus,.form-group select:focus{border-color:var(--blue-md);box-shadow:0 0 0 3px #2563EB18}
+.form-group textarea{resize:vertical;min-height:72px}
+.form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;padding-top:12px;border-top:1px solid var(--gray1)}
+.btn{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:none;transition:.15s;font-family:inherit}
+.btn-primary{background:var(--blue-md);color:#fff}.btn-primary:hover{background:var(--blue)}
+.btn-secondary{background:var(--white);color:var(--gray5);border:1px solid var(--gray2)}.btn-secondary:hover{background:var(--gray1)}
+.btn-success{background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0}
+.btn-danger{background:var(--red-lt);color:var(--red);border:1px solid #FECACA}
+.btn-purple{background:var(--purple-lt);color:var(--purple);border:1px solid #C4B5FD}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:10px;font-size:12px;font-weight:500;z-index:999;display:none;align-items:center;gap:8px;box-shadow:0 8px 24px #0003;max-width:340px;color:#fff}
+.toast.show{display:flex}
+.toast-success{background:#065F46}
+.toast-error{background:var(--red)}
+.toast-info{background:var(--blue)}
+
+/* ── Misc ── */
+.section-title{font-size:14px;font-weight:700;color:var(--gray6)}
+.section-sub{font-size:11px;color:var(--gray3);margin-top:2px}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px}
+.score-bar{height:5px;background:var(--gray1);border-radius:4px;overflow:hidden;margin-top:5px}
+.score-fill{height:100%;border-radius:4px}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--gray2);border-radius:4px}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"><i class="ti ti-check" id="toast-icon"></i><span id="toast-msg"></span></div>
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" id="modal-content"></div></div>
+
+<div class="shell">
+<!-- ── SIDEBAR ── -->
+<div class="sidebar">
+  <div class="brand">
+    <div class="brand-logo"><i class="ti ti-wifi"></i></div>
+    <div>
+      <div class="brand-name">ISP OS AIM</div>
+      <div class="brand-sub">Asset & Inventory<br>Management</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-item active" onclick="showPage('dashboard',this)"><div class="nav-left"><i class="ti ti-layout-dashboard"></i> Dashboard</div></div>
+    <div class="nav-item" onclick="showPage('product-in',this)"><div class="nav-left"><i class="ti ti-package-import"></i> Product In</div><i class="ti ti-chevron-right nav-chevron"></i></div>
+    <div class="nav-item" onclick="showPage('product-out',this)"><div class="nav-left"><i class="ti ti-package-export"></i> Product Request & Out</div><i class="ti ti-chevron-right nav-chevron"></i></div>
+    <div class="nav-item" onclick="showPage('lifecycle',this)"><div class="nav-left"><i class="ti ti-recycle"></i> Product Life Cycle</div><i class="ti ti-chevron-right nav-chevron"></i></div>
+    <div class="nav-item" onclick="showPage('assets',this)"><div class="nav-left"><i class="ti ti-server"></i> Assets / Inventory</div><i class="ti ti-chevron-right nav-chevron"></i></div>
+    <div class="nav-item" onclick="showPage('reports',this)"><div class="nav-left"><i class="ti ti-chart-bar"></i> Reports & Analytics</div><i class="ti ti-chevron-right nav-chevron"></i></div>
+    <div class="nav-item" onclick="showPage('invoices',this)"><div class="nav-left"><i class="ti ti-receipt"></i> Invoices</div><i class="ti ti-chevron-right nav-chevron"></i></div>
+    <div class="nav-item" onclick="showPage('customers',this)"><div class="nav-left"><i class="ti ti-users"></i> Customers</div></div>
+    <div class="nav-item" onclick="showPage('suppliers',this)"><div class="nav-left"><i class="ti ti-building-store"></i> Suppliers</div></div>
+    <div class="nav-item" onclick="showPage('technicians',this)"><div class="nav-left"><i class="ti ti-tool"></i> Technicians</div></div>
+    <div class="nav-item" onclick="showPage('stores',this)"><div class="nav-left"><i class="ti ti-building-warehouse"></i> Stores / Warehouse</div></div>
+    <div class="nav-item" onclick="showPage('settings',this)"><div class="nav-left"><i class="ti ti-settings"></i> Settings</div></div>
+    <div class="nav-item" onclick="showPage('audit',this)"><div class="nav-left"><i class="ti ti-clipboard-list"></i> Audit Trail</div></div>
+  </nav>
+  <div class="quick-access">
+    <div class="qa-label">Quick Access</div>
+    <div class="qa-grid">
+      <button class="qa-btn" onclick="openModal('new-purchase')"><i class="ti ti-shopping-cart"></i> New Purchase</button>
+      <button class="qa-btn" onclick="openModal('new-issue')"><i class="ti ti-send"></i> New Issue</button>
+      <button class="qa-btn" onclick="openModal('new-asset')"><i class="ti ti-cube-plus"></i> New Asset</button>
+      <button class="qa-btn" onclick="openModal('add-customer')"><i class="ti ti-user-plus"></i> Add Customer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-sub" id="topbar-sub">Overview of your inventory and assets</div>
+    </div>
+    <div class="search-wrap">
+      <div class="search-box" onclick="showPage('assets',document.querySelector('[onclick*=assets]'))">
+        <i class="ti ti-search"></i>
+        Search by Asset ID, Serial, Customer...
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="date-range">15 Jun 2026 – 24 Jun 2026 <i class="ti ti-calendar"></i></div>
+      <button class="topbar-btn" onclick="showToast('Customize panel opened','info')"><i class="ti ti-adjustments-horizontal"></i> Customize</button>
+      <div class="icon-btn notif-dot" onclick="showToast('5 new notifications','info')"><i class="ti ti-bell" style="font-size:17px"></i></div>
+      <div class="icon-btn" onclick="showToast('Help center opened','info')"><i class="ti ti-help-circle" style="font-size:17px"></i></div>
+      <div class="user-chip" onclick="showPage('settings',document.querySelector('[onclick*=settings]'))">
+        <div class="user-avatar">RH</div>
+        <div><div class="user-name">Rakib Hossain</div><div class="user-role">Store Officer</div></div>
+        <i class="ti ti-chevron-down" style="font-size:13px;color:var(--gray3)"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DASHBOARD PAGE ══ -->
+  <div class="page active" id="page-dashboard">
+
+    <!-- Stat Cards -->
+    <div class="stat-row">
+      <div class="stat-card blue" onclick="showPage('assets',document.querySelector('[onclick*=assets]'))">
+        <div class="stat-icon blue"><i class="ti ti-package"></i></div>
+        <div class="stat-label">Total Products</div>
+        <div class="stat-val">1,256</div>
+        <div class="stat-sub">All Items</div>
+        <div class="stat-trend trend-up"><i class="ti ti-trending-up" style="font-size:11px"></i> 12% vs last 7 days</div>
+      </div>
+      <div class="stat-card green" onclick="showPage('assets',document.querySelector('[onclick*=assets]'))">
+        <div class="stat-icon green"><i class="ti ti-cube"></i></div>
+        <div class="stat-label">Total Assets</div>
+        <div class="stat-val">987</div>
+        <div class="stat-sub">Trackable Assets</div>
+        <div class="stat-trend trend-up"><i class="ti ti-trending-up" style="font-size:11px"></i> 8% vs last 7 days</div>
+      </div>
+      <div class="stat-card purple" onclick="showPage('assets',document.querySelector('[onclick*=assets]'))">
+        <div class="stat-icon purple"><i class="ti ti-stack-2"></i></div>
+        <div class="stat-label">Available Stock</div>
+        <div class="stat-val">786</div>
+        <div class="stat-sub">Ready to Use</div>
+        <div class="stat-trend trend-up"><i class="ti ti-trending-up" style="font-size:11px"></i> 10% vs last 7 days</div>
+      </div>
+      <div class="stat-card orange" onclick="showPage('technicians',document.querySelector('[onclick*=technicians]'))">
+        <div class="stat-icon orange"><i class="ti ti-user-check"></i></div>
+        <div class="stat-label">Assigned / In Use</div>
+        <div class="stat-val">467</div>
+        <div class="stat-sub">Deployed Assets</div>
+        <div class="stat-trend trend-dn"><i class="ti ti-trending-down" style="font-size:11px"></i> 3% vs last 7 days</div>
+      </div>
+      <div class="stat-card amber" onclick="showPage('product-out',document.querySelector('[onclick*=product-out]'))">
+        <div class="stat-icon amber"><i class="ti ti-clock"></i></div>
+        <div class="stat-label">Pending Requests</div>
+        <div class="stat-val">23</div>
+        <div class="stat-sub">Awaiting Approval</div>
+        <div class="stat-trend trend-dn"><i class="ti ti-trending-down" style="font-size:11px"></i> 15% vs last 7 days</div>
+      </div>
+      <div class="stat-card red" onclick="showPage('lifecycle',document.querySelector('[onclick*=lifecycle]'))">
+        <div class="stat-icon red"><i class="ti ti-trash"></i></div>
+        <div class="stat-label">Wastage (This Month)</div>
+        <div class="stat-val">12</div>
+        <div class="stat-sub">Scrap / Lost / Damaged</div>
+        <div class="stat-trend trend-up"><i class="ti ti-trending-up" style="font-size:11px"></i> 5% vs last 7 days</div>
+      </div>
+    </div>
+
+    <!-- Row 2: Category + Line Chart + Activity -->
+    <div class="grid-3">
+      <!-- Stock by Category -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><i class="ti ti-chart-donut"></i> Stock Status (By Category)</div>
+        </div>
+        <div class="panel-body">
+          <div class="donut-wrap">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#E2E8F0" stroke-width="20"/>
+              <!-- ONU 59% -->
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#2563EB" stroke-width="20"
+                stroke-dasharray="185 129" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+              <!-- Router 16% -->
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#0F9E6E" stroke-width="20"
+                stroke-dasharray="50 264" stroke-dashoffset="-185" transform="rotate(-90 60 60)"/>
+              <!-- Switch 10% -->
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#7C3AED" stroke-width="20"
+                stroke-dasharray="31 283" stroke-dashoffset="-235" transform="rotate(-90 60 60)"/>
+              <!-- OLT 7% -->
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#EA580C" stroke-width="20"
+                stroke-dasharray="22 292" stroke-dashoffset="-266" transform="rotate(-90 60 60)"/>
+              <!-- Other 8% -->
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#94A3B8" stroke-width="20"
+                stroke-dasharray="25 289" stroke-dashoffset="-288" transform="rotate(-90 60 60)"/>
+              <text x="60" y="56" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">1,256</text>
+              <text x="60" y="69" text-anchor="middle" font-size="9" fill="#94A3B8">Total</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:#2563EB"></div>ONU / ONT<span class="legend-val" style="margin-left:auto;padding-left:6px">59% (742)</span></div>
+              <div class="legend-item"><div class="legend-dot" style="background:#0F9E6E"></div>Router<span class="legend-val" style="margin-left:auto;padding-left:6px">16% (201)</span></div>
+              <div class="legend-item"><div class="legend-dot" style="background:#7C3AED"></div>Switch<span class="legend-val" style="margin-left:auto;padding-left:6px">10% (126)</span></div>
+              <div class="legend-item"><div class="legend-dot" style="background:#EA580C"></div>OLT<span class="legend-val" style="margin-left:auto;padding-left:6px">7% (88)</span></div>
+              <div class="legend-item"><div class="legend-dot" style="background:#94A3B8"></div>Other<span class="legend-val" style="margin-left:auto;padding-left:6px">8% (99)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stock Movement Line Chart -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><i class="ti ti-chart-line"></i> Stock Movement (Last 6 Months)</div>
+        </div>
+        <div class="panel-body" style="padding-top:8px">
+          <div style="display:flex;gap:14px;margin-bottom:8px;font-size:11px">
+            <span style="display:flex;align-items:center;gap:5px"><span style="width:20px;height:2px;background:#2563EB;display:inline-block;border-radius:2px"></span>Purchase</span>
+            <span style="display:flex;align-items:center;gap:5px"><span style="width:20px;height:2px;background:#0F9E6E;display:inline-block;border-radius:2px"></span>Issue</span>
+            <span style="display:flex;align-items:center;gap:5px"><span style="width:20px;height:2px;background:#EA580C;display:inline-block;border-radius:2px"></span>Return</span>
+          </div>
+          <svg width="100%" height="140" viewBox="0 0 340 140" preserveAspectRatio="none">
+            <!-- Grid lines -->
+            <line x1="0" y1="20" x2="340" y2="20" stroke="#F1F3F9" stroke-width="1"/>
+            <line x1="0" y1="55" x2="340" y2="55" stroke="#F1F3F9" stroke-width="1"/>
+            <line x1="0" y1="90" x2="340" y2="90" stroke="#F1F3F9" stroke-width="1"/>
+            <line x1="0" y1="125" x2="340" y2="125" stroke="#F1F3F9" stroke-width="1"/>
+            <!-- Y labels -->
+            <text x="0" y="23" font-size="9" fill="#94A3B8">1K</text>
+            <text x="0" y="58" font-size="9" fill="#94A3B8">800</text>
+            <text x="0" y="93" font-size="9" fill="#94A3B8">400</text>
+            <text x="0" y="128" font-size="9" fill="#94A3B8">0</text>
+            <!-- X labels -->
+            <text x="30" y="140" font-size="9" fill="#94A3B8">Jan</text>
+            <text x="88" y="140" font-size="9" fill="#94A3B8">Feb</text>
+            <text x="146" y="140" font-size="9" fill="#94A3B8">Mar</text>
+            <text x="204" y="140" font-size="9" fill="#94A3B8">Apr</text>
+            <text x="258" y="140" font-size="9" fill="#94A3B8">May</text>
+            <text x="308" y="140" font-size="9" fill="#94A3B8">Jun</text>
+            <!-- Purchase line (blue) -->
+            <polyline points="30,90 88,70 146,45 204,25 258,35 315,40" fill="none" stroke="#2563EB" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="30" cy="90" r="3" fill="#2563EB"/>
+            <circle cx="88" cy="70" r="3" fill="#2563EB"/>
+            <circle cx="146" cy="45" r="3" fill="#2563EB"/>
+            <circle cx="204" cy="25" r="3" fill="#2563EB"/>
+            <circle cx="258" cy="35" r="3" fill="#2563EB"/>
+            <circle cx="315" cy="40" r="3" fill="#2563EB"/>
+            <!-- Issue line (green) -->
+            <polyline points="30,100 88,85 146,72 204,58 258,65 315,60" fill="none" stroke="#0F9E6E" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="30" cy="100" r="3" fill="#0F9E6E"/>
+            <circle cx="88" cy="85" r="3" fill="#0F9E6E"/>
+            <circle cx="146" cy="72" r="3" fill="#0F9E6E"/>
+            <circle cx="204" cy="58" r="3" fill="#0F9E6E"/>
+            <circle cx="258" cy="65" r="3" fill="#0F9E6E"/>
+            <circle cx="315" cy="60" r="3" fill="#0F9E6E"/>
+            <!-- Return line (orange) -->
+            <polyline points="30,115 88,108 146,100 204,95 258,90 315,85" fill="none" stroke="#EA580C" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="30" cy="115" r="3" fill="#EA580C"/>
+            <circle cx="315" cy="85" r="3" fill="#EA580C"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Recent Activities -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><i class="ti ti-activity"></i> Recent Activities</div>
+          <button class="panel-action" onclick="showPage('audit',document.querySelector('[onclick*=audit]'))">View All</button>
+        </div>
+        <div class="panel-body">
+          <div class="act-item">
+            <div class="act-icon" style="background:var(--blue-lt)"><i class="ti ti-shopping-cart" style="color:var(--blue-md)"></i></div>
+            <div style="flex:1"><div class="act-title">New Purchase</div><div class="act-sub">Invoice PIN-2026-00048</div></div>
+            <div class="act-time">24 Jun 02:35 PM</div>
+          </div>
+          <div class="act-item">
+            <div class="act-icon" style="background:var(--green-lt)"><i class="ti ti-send" style="color:var(--green)"></i></div>
+            <div style="flex:1"><div class="act-title">Issue to Technician</div><div class="act-sub">Ticket ISS-2026-0154</div></div>
+            <div class="act-time">24 Jun 01:10 PM</div>
+          </div>
+          <div class="act-item">
+            <div class="act-icon" style="background:var(--orange-lt)"><i class="ti ti-refresh" style="color:var(--orange)"></i></div>
+            <div style="flex:1"><div class="act-title">Asset Returned</div><div class="act-sub">ONU-00125</div></div>
+            <div class="act-time">24 Jun 11:20 AM</div>
+          </div>
+          <div class="act-item">
+            <div class="act-icon" style="background:var(--purple-lt)"><i class="ti ti-tool" style="color:var(--purple)"></i></div>
+            <div style="flex:1"><div class="act-title">Repair Completed</div><div class="act-sub">Repair ID REP-2026-0061</div></div>
+            <div class="act-time">23 Jun 05:45 PM</div>
+          </div>
+          <div class="act-item">
+            <div class="act-icon" style="background:var(--amber-lt)"><i class="ti ti-adjustments" style="color:var(--amber)"></i></div>
+            <div style="flex:1"><div class="act-title">Stock Adjustment</div><div class="act-sub">ADJ-2026-0032</div></div>
+            <div class="act-time">23 Jun 03:30 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Top Products + Request Overview + Low Stock + Lifecycle -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+      <!-- Top Consumed Products -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><i class="ti ti-flame"></i> Top Consumed Products (This Month)</div>
+        </div>
+        <div class="panel-body">
+          <div class="bar-chart">
+            <div class="bar-row">
+              <div class="bar-label">Drop Cable</div>
+              <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+              <div class="bar-val">12,450 M</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">ONU (ZTE F660)</div>
+              <div class="bar-track"><div class="bar-fill" style="width:67%"></div></div>
+              <div class="bar-val">8,320 Pcs</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Patch Cord</div>
+              <div class="bar-track"><div class="bar-fill" style="width:38%"></div></div>
+              <div class="bar-val">4,750 Pcs</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">RJ45 Connector</div>
+              <div class="bar-track"><div class="bar-fill" style="width:29%"></div></div>
+              <div class="bar-val">3,620 Pcs</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">SFP Module</div>
+              <div class="bar-track"><div class="bar-fill" style="width:10%"></div></div>
+              <div class="bar-val">1,250 Pcs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Requests Overview -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><i class="ti ti-clipboard-list"></i> Requests Overview</div>
+          <button class="panel-action" onclick="showPage('product-out',document.querySelector('[onclick*=product-out]'))">View All</button>
+        </div>
+        <div class="panel-body">
+          <div class="req-donut">
+            <svg width="130" height="130" viewBox="0 0 130 130">
+              <circle cx="65" cy="65" r="52" fill="none" stroke="#E2E8F0" stroke-width="22"/>
+              <circle cx="65" cy="65" r="52" fill="none" stroke="#F59E0B" stroke-width="22"
+                stroke-dasharray="140 187" stroke-dashoffset="0" transform="rotate(-90 65 65)"/>
+              <circle cx="65" cy="65" r="52" fill="none" stroke="#0F9E6E" stroke-width="22"
+                stroke-dasharray="104 223" stroke-dashoffset="-140" transform="rotate(-90 65 65)"/>
+              <circle cx="65" cy="65" r="52" fill="none" stroke="#DC2626" stroke-width="22"
+                stroke-dasharray="47 280" stroke-dashoffset="-244" transform="rotate(-90 65 65)"/>
+              <circle cx="65" cy="65" r="52" fill="none" stroke="#7C3AED" stroke-width="22"
+                stroke-dasharray="36 291" stroke-dashoffset="-291" transform="rotate(-90 65 65)"/>
+              <text x="65" y="61" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">23</text>
+              <text x="65" y="74" text-anchor="middle" font-size="9" fill="#94A3B8">Total</text>
+            </svg>
+            <div class="req-legend">
+              <div class="req-leg-item"><div class="req-leg-dot" style="background:#F59E0B"></div><div class="req-leg-label">Pending</div><div class="req-leg-val">23 (43%)</div></div>
+              <div class="req-leg-item"><div class="req-leg-dot" style="background:#0F9E6E"></div><div class="req-leg-label">Approved</div><div class="req-leg-val">18 (33%)</div></div>
+              <div class="req-leg-item"><div class="req-leg-dot" style="background:#DC2626"></div><div class="req-leg-label">Rejected</div><div class="req-leg-val">8 (15%)</div></div>
+              <div class="req-leg-item"><div class="req-leg-dot" style="background:#7C3AED"></div><div class="req-leg-label">Issued</div><div class="req-leg-val">5 (9%)</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column: Low Stock + Lifecycle + Quick Reports -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <!-- Low Stock Alert -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><i class="ti ti-alert-triangle" style="color:var(--amber)"></i> Low Stock Alert</div>
+            <button class="panel-action" onclick="showPage('assets',document.querySelector('[onclick*=assets]'))">View All</button>
+          </div>
+          <div class="panel-body" style="padding-top:8px;padding-bottom:8px">
+            <div class="alert-item">
+              <div class="alert-icon"><i class="ti ti-alert-triangle"></i></div>
+              <div class="alert-name">ONU (ZTE F660)</div>
+              <div class="alert-val">Available: <strong style="color:var(--red)">15 Pcs</strong></div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon"><i class="ti ti-alert-triangle"></i></div>
+              <div class="alert-name">SFP Module (1.25G)</div>
+              <div class="alert-val">Available: <strong style="color:var(--red)">4 Pcs</strong></div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon"><i class="ti ti-alert-triangle"></i></div>
+              <div class="alert-name">Splitter (1:8)</div>
+              <div class="alert-val">Available: <strong style="color:var(--amber)">6 Pcs</strong></div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon"><i class="ti ti-alert-triangle"></i></div>
+              <div class="alert-name">Patch Cord</div>
+              <div class="alert-val">Available: <strong style="color:var(--amber)">20 Pcs</strong></div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon"><i class="ti ti-alert-triangle"></i></div>
+              <div class="alert-name">Drop Cable (300M)</div>
+              <div class="alert-val">Available: <strong style="color:var(--red)">2 Roll</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Asset Lifecycle Overview -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><i class="ti ti-recycle"></i> Asset Lifecycle Overview</div>
+            <button class="panel-action" onclick="showPage('lifecycle',document.querySelector('[onclick*=lifecycle]'))">View All</button>
+          </div>
+          <div class="panel-body" style="padding-top:8px;padding-bottom:8px">
+            <div class="lifecycle-row">
+              <div class="lc-pill" onclick="showPage('assets',document.querySelector('[onclick*=assets]'))">
+                <div class="lc-num" style="color:var(--green)">467</div>
+                <div class="lc-label"><i class="ti ti-check-circle" style="color:var(--green)"></i> Active</div>
+              </div>
+              <div class="lc-pill" onclick="showPage('lifecycle',document.querySelector('[onclick*=lifecycle]'))">
+                <div class="lc-num" style="color:var(--amber)">38</div>
+                <div class="lc-label"><i class="ti ti-tool" style="color:var(--amber)"></i> In Repair</div>
+              </div>
+              <div class="lc-pill" onclick="showPage('lifecycle',document.querySelector('[onclick*=lifecycle]'))">
+                <div class="lc-num" style="color:var(--blue-md)">27</div>
+                <div class="lc-label"><i class="ti ti-refresh" style="color:var(--blue-md)"></i> Returned</div>
+              </div>
+              <div class="lc-pill" onclick="showPage('lifecycle',document.querySelector('[onclick*=lifecycle]'))">
+                <div class="lc-num" style="color:var(--red)">12</div>
+                <div class="lc-label"><i class="ti ti-trash" style="color:var(--red)"></i> Scrapped</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4: Recent Requests Table + Quick Reports -->
+    <div class="grid-2-1">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><i class="ti ti-clipboard"></i> Recent Requests</div>
+          <button class="panel-action" onclick="showPage('product-out',document.querySelector('[onclick*=product-out]'))">View All</button>
+        </div>
+        <div class="panel-body-np">
+          <table class="tbl">
+            <thead><tr><th>Ticket No</th><th>Type</th><th>Requested By</th><th>Department</th><th>Requested Date</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><strong>REQ-2026-0415</strong></td><td>Installation</td><td>Technician Rakib</td><td>Installation</td><td>24 Jun 10:30 AM</td><td><span class="bdg bdg-amber">Pending</span></td></tr>
+              <tr><td><strong>REQ-2026-0414</strong></td><td>Maintenance</td><td>Technician Sohag</td><td>Maintenance</td><td>24 Jun 09:15 AM</td><td><span class="bdg bdg-green">Approved</span></td></tr>
+              <tr><td><strong>REQ-2026-0413</strong></td><td>Support</td><td>NOC Engineer Riad</td><td>NOC</td><td>23 Jun 08:40 PM</td><td><span class="bdg bdg-purple">Issued</span></td></tr>
+              <tr><td><strong>REQ-2026-0412</strong></td><td>Internal</td><td>Store Officer</td><td>Store</td><td>23 Jun 04:25 PM</td><td><span class="bdg bdg-red">Rejected</span></td></tr>
+              <tr><td><strong>REQ-2026-0411</strong></td><td>Installation</td><td>Technician Rakib</td><td>Installation</td><td>23 Jun 02:10 PM</td><td><span class="bdg bdg-amber">Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Quick Reports -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><i class="ti ti-report"></i> Quick Reports</div>
+          <button class="panel-action" onclick="showPage('reports',document.querySelector('[onclick*=reports]'))">View All</button>
+        </div>
+        <div class="panel-body">
+          <div class="qr-grid">
+            <div class="qr-btn" onclick="showPage('reports',document.querySelector('[onclick*=reports]'))"><i class="ti ti-package" style="color:var(--green)"></i><span>Stock Report</span></div>
+            <div class="qr-btn" onclick="showPage('product-out',document.querySelector('[onclick*=product-out]'))"><i class="ti ti-send" style="color:var(--blue-md)"></i><span>Issue Report</span></div>
+            <div class="qr-btn" onclick="showPage('product-in',document.querySelector('[onclick*=product-in]'))"><i class="ti ti-shopping-cart" style="color:var(--purple)"></i><span>Purchase Report</span></div>
+            <div class="qr-btn" onclick="showPage('assets',document.querySelector('[onclick*=assets]'))"><i class="ti ti-cube" style="color:var(--orange)"></i><span>Asset Report</span></div>
+            <div class="qr-btn" onclick="showPage('lifecycle',document.querySelector('[onclick*=lifecycle]'))"><i class="ti ti-trash" style="color:var(--red)"></i><span>Wastage Report</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PRODUCT IN PAGE ══ -->
+  <div class="page" id="page-product-in">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div><div class="section-title">Product In — Purchase Management</div><div class="section-sub">All purchase entries, batch tracking and supplier invoices</div></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="showToast('Bulk Scan opened','info')"><i class="ti ti-scan" style="font-size:14px"></i> Bulk Scan</button>
+        <button class="btn btn-primary" onclick="openModal('new-purchase')"><i class="ti ti-plus" style="font-size:14px"></i> New Purchase</button>
+      </div>
+    </div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Invoice / PIN</th><th>Supplier</th><th>Product</th><th>Qty</th><th>Unit Price</th><th>Total</th><th>Entry Method</th><th>Store</th><th>Date</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>PIN-2026-00048</strong></td><td>Dhaka Tech Ltd</td><td>ZTE F660 ONU</td><td>50</td><td>৳ 850</td><td>৳ 42,500</td><td><span class="bdg bdg-blue">CSV Import</span></td><td>HQ Store</td><td>24 Jun</td><td><span class="bdg bdg-green">Received</span></td></tr>
+          <tr><td><strong>PIN-2026-00047</strong></td><td>Network House</td><td>Drop Cable (CAT6)</td><td>2,000M</td><td>৳ 18/m</td><td>৳ 36,000</td><td><span class="bdg bdg-purple">Barcode Scan</span></td><td>CHT Store</td><td>23 Jun</td><td><span class="bdg bdg-green">Received</span></td></tr>
+          <tr><td><strong>PIN-2026-00046</strong></td><td>Fiber Corp BD</td><td>SFP Module 1.25G</td><td>20</td><td>৳ 2,400</td><td>৳ 48,000</td><td><span class="bdg bdg-gray">Manual</span></td><td>HQ Store</td><td>22 Jun</td><td><span class="bdg bdg-amber">Partial</span></td></tr>
+          <tr><td><strong>PIN-2026-00045</strong></td><td>Dhaka Tech Ltd</td><td>Splitter 1:8</td><td>100</td><td>৳ 350</td><td>৳ 35,000</td><td><span class="bdg bdg-blue">CSV Import</span></td><td>SYL Store</td><td>21 Jun</td><td><span class="bdg bdg-green">Received</span></td></tr>
+          <tr><td><strong>PIN-2026-00044</strong></td><td>BD Network</td><td>RJ45 Connector</td><td>5,000</td><td>৳ 4</td><td>৳ 20,000</td><td><span class="bdg bdg-gray">Manual</span></td><td>HQ Store</td><td>20 Jun</td><td><span class="bdg bdg-green">Received</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ PRODUCT REQUEST & OUT PAGE ══ -->
+  <div class="page" id="page-product-out">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div><div class="section-title">Product Request & Out</div><div class="section-sub">Manage technician requests, approvals and issuance</div></div>
+      <button class="btn btn-primary" onclick="openModal('new-issue')"><i class="ti ti-plus" style="font-size:14px"></i> New Issue</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div class="panel" style="border-top:3px solid var(--amber)"><div class="panel-body" style="text-align:center"><div style="font-size:24px;font-weight:700;color:var(--amber)">23</div><div style="font-size:11px;color:var(--gray4)">Pending</div></div></div>
+      <div class="panel" style="border-top:3px solid var(--green)"><div class="panel-body" style="text-align:center"><div style="font-size:24px;font-weight:700;color:var(--green)">18</div><div style="font-size:11px;color:var(--gray4)">Approved</div></div></div>
+      <div class="panel" style="border-top:3px solid var(--red)"><div class="panel-body" style="text-align:center"><div style="font-size:24px;font-weight:700;color:var(--red)">8</div><div style="font-size:11px;color:var(--gray4)">Rejected</div></div></div>
+      <div class="panel" style="border-top:3px solid var(--purple)"><div class="panel-body" style="text-align:center"><div style="font-size:24px;font-weight:700;color:var(--purple)">5</div><div style="font-size:11px;color:var(--gray4)">Issued</div></div></div>
+    </div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Ticket No</th><th>Type</th><th>Product</th><th>Qty</th><th>Requested By</th><th>Department</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><strong>REQ-2026-0415</strong></td><td>Installation</td><td>ZTE F660 ONU</td><td>2 Pcs</td><td>Technician Rakib</td><td>Installation</td><td>24 Jun 10:30 AM</td><td><span class="bdg bdg-amber">Pending</span></td><td><button class="btn btn-success" style="padding:4px 10px;font-size:11px" onclick="showToast('Request approved!','info')">Approve</button></td></tr>
+          <tr><td><strong>REQ-2026-0414</strong></td><td>Maintenance</td><td>SFP Module</td><td>1 Pcs</td><td>Technician Sohag</td><td>Maintenance</td><td>24 Jun 09:15 AM</td><td><span class="bdg bdg-green">Approved</span></td><td><button class="btn btn-primary" style="padding:4px 10px;font-size:11px" onclick="openModal('new-issue')">Issue Now</button></td></tr>
+          <tr><td><strong>REQ-2026-0413</strong></td><td>Support</td><td>Patch Cord</td><td>5 Pcs</td><td>NOC Engineer Riad</td><td>NOC</td><td>23 Jun 08:40 PM</td><td><span class="bdg bdg-purple">Issued</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="showToast('Details loaded','info')">View</button></td></tr>
+          <tr><td><strong>REQ-2026-0412</strong></td><td>Internal</td><td>RJ45 Connector</td><td>50 Pcs</td><td>Store Officer</td><td>Store</td><td>23 Jun 04:25 PM</td><td><span class="bdg bdg-red">Rejected</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="showToast('Details loaded','info')">View</button></td></tr>
+          <tr><td><strong>REQ-2026-0411</strong></td><td>Installation</td><td>Drop Cable</td><td>300 M</td><td>Technician Rakib</td><td>Installation</td><td>23 Jun 02:10 PM</td><td><span class="bdg bdg-amber">Pending</span></td><td><button class="btn btn-success" style="padding:4px 10px;font-size:11px" onclick="showToast('Request approved!','info')">Approve</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ LIFECYCLE PAGE ══ -->
+  <div class="page" id="page-lifecycle">
+    <div><div class="section-title">Product Life Cycle</div><div class="section-sub">Track every asset from purchase to scrap — search by Serial or MAC</div></div>
+    <div class="panel" style="padding:16px">
+      <div style="display:flex;gap:10px">
+        <input id="asset-search" class="form-group" style="flex:1;border:1px solid var(--gray2);border-radius:8px;padding:9px 14px;font-size:13px;outline:none;font-family:inherit" placeholder="Search Asset ID, Serial, MAC Address — e.g., ONU-00125 or 48:57:DD:A3:21:F0"/>
+        <button class="btn btn-primary" onclick="doAssetSearch()"><i class="ti ti-search"></i> Search</button>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--gray3)">Try: <span style="color:var(--blue-md);cursor:pointer" onclick="document.getElementById('asset-search').value='ONU-00125';doAssetSearch()">ONU-00125</span> &nbsp;|&nbsp; <span style="color:var(--blue-md);cursor:pointer" onclick="document.getElementById('asset-search').value='48:57:DD:A3:21:F0';doAssetSearch()">48:57:DD:A3:21:F0</span></div>
+    </div>
+    <div id="asset-result"></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div class="panel" style="border-top:3px solid var(--green)"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:var(--green-lt);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-check-circle" style="color:var(--green);font-size:18px"></i></div><div><div style="font-size:20px;font-weight:700;color:var(--green)">467</div><div style="font-size:11px;color:var(--gray4)">Active / In Use</div></div></div></div>
+      <div class="panel" style="border-top:3px solid var(--amber)"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:var(--amber-lt);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-tool" style="color:var(--amber);font-size:18px"></i></div><div><div style="font-size:20px;font-weight:700;color:var(--amber)">38</div><div style="font-size:11px;color:var(--gray4)">In Repair</div></div></div></div>
+      <div class="panel" style="border-top:3px solid var(--blue-md)"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:var(--blue-lt);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-refresh" style="color:var(--blue-md);font-size:18px"></i></div><div><div style="font-size:20px;font-weight:700;color:var(--blue-md)">27</div><div style="font-size:11px;color:var(--gray4)">Returned</div></div></div></div>
+      <div class="panel" style="border-top:3px solid var(--red)"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:var(--red-lt);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-trash" style="color:var(--red);font-size:18px"></i></div><div><div style="font-size:20px;font-weight:700;color:var(--red)">12</div><div style="font-size:11px;color:var(--gray4)">Scrapped</div></div></div></div>
+    </div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Asset ID</th><th>Serial / MAC</th><th>Product</th><th>Current Status</th><th>Assigned To</th><th>Location</th><th>Warranty</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ONU-00125</strong></td><td style="font-family:monospace;font-size:11px">48:57:DD:A3:21:F0</td><td>ZTE F660 ONU</td><td><span class="bdg bdg-amber">In Repair</span></td><td>—</td><td>Repair Shop</td><td><span class="bdg bdg-red">Expired</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="document.getElementById('asset-search').value='ONU-00125';doAssetSearch()">Timeline</button></td></tr>
+          <tr><td><strong>ONU-00124</strong></td><td style="font-family:monospace;font-size:11px">48:57:DD:A1:12:C4</td><td>ZTE F660 ONU</td><td><span class="bdg bdg-green">Active</span></td><td>Customer: Karim</td><td>Banani, Dhaka</td><td><span class="bdg bdg-green">Valid</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="document.getElementById('asset-search').value='ONU-00124';doAssetSearch()">Timeline</button></td></tr>
+          <tr><td><strong>SFP-00044</strong></td><td style="font-family:monospace;font-size:11px">SFP-1G-2026-044</td><td>SFP Module 1.25G</td><td><span class="bdg bdg-blue">In Stock</span></td><td>—</td><td>HQ Store</td><td><span class="bdg bdg-amber">30 days</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="showToast('Timeline loaded','info')">Timeline</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ ASSETS PAGE ══ -->
+  <div class="page" id="page-assets">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div><div class="section-title">Assets / Inventory</div><div class="section-sub">Full inventory with real-time stock levels across all stores</div></div>
+      <div style="display:flex;gap:8px">
+        <select style="border:1px solid var(--gray2);border-radius:8px;padding:7px 10px;font-size:12px;color:var(--gray5);background:var(--white);outline:none">
+          <option>All Categories</option><option>ONU/ONT</option><option>Router</option><option>SFP Module</option><option>Cable</option>
+        </select>
+        <select style="border:1px solid var(--gray2);border-radius:8px;padding:7px 10px;font-size:12px;color:var(--gray5);background:var(--white);outline:none">
+          <option>All Stores</option><option>HQ Store</option><option>Chittagong</option><option>Sylhet</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('new-asset')"><i class="ti ti-plus" style="font-size:14px"></i> New Asset</button>
+      </div>
+    </div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Product Name</th><th>Category</th><th>Type</th><th>Total Stock</th><th>Available</th><th>In Use</th><th>Min Level</th><th>AI Forecast</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ZTE F660 ONU</strong></td><td>ONU / ONT</td><td><span class="bdg bdg-blue">Serialized</span></td><td>742</td><td style="color:var(--red);font-weight:600">15</td><td>690</td><td>50</td><td style="color:var(--red);font-size:11px">7 days left</td><td><span class="bdg bdg-red">⚠ Critical</span></td></tr>
+          <tr><td><strong>SFP Module 1.25G</strong></td><td>SFP / OLT</td><td><span class="bdg bdg-blue">Serialized</span></td><td>88</td><td style="color:var(--red);font-weight:600">4</td><td>82</td><td>10</td><td style="color:var(--red);font-size:11px">3 days left</td><td><span class="bdg bdg-red">⚠ Critical</span></td></tr>
+          <tr><td><strong>Splitter (1:8)</strong></td><td>Passive</td><td><span class="bdg bdg-gray">Non-Serial</span></td><td>320</td><td style="color:var(--amber);font-weight:600">6</td><td>310</td><td>20</td><td style="color:var(--amber);font-size:11px">5 days left</td><td><span class="bdg bdg-amber">Low</span></td></tr>
+          <tr><td><strong>Drop Cable (CAT6)</strong></td><td>Cable</td><td><span class="bdg bdg-gray">Non-Serial</span></td><td>45,000M</td><td>12,450M</td><td>—</td><td>5,000M</td><td style="color:var(--green);font-size:11px">30+ days</td><td><span class="bdg bdg-green">OK</span></td></tr>
+          <tr><td><strong>Patch Cord CAT6</strong></td><td>Cable</td><td><span class="bdg bdg-gray">Non-Serial</span></td><td>4,750</td><td style="color:var(--amber);font-weight:600">20</td><td>—</td><td>100</td><td style="color:var(--amber);font-size:11px">8 days left</td><td><span class="bdg bdg-amber">Low</span></td></tr>
+          <tr><td><strong>TP-Link Router</strong></td><td>Router</td><td><span class="bdg bdg-blue">Serialized</span></td><td>201</td><td>45</td><td>156</td><td>20</td><td style="color:var(--green);font-size:11px">21 days</td><td><span class="bdg bdg-green">OK</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ TECHNICIANS PAGE ══ -->
+  <div class="page" id="page-technicians">
+    <div><div class="section-title">Technician Management</div><div class="section-sub">Performance tracking, field stock and assignment history</div></div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+      <div class="panel" onclick="openModal('tech-view','Rakib Hossain','92')" style="cursor:pointer">
+        <div style="display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--gray1)">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--blue-lt);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--blue-md)">RH</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600">Rakib Hossain</div><div style="font-size:11px;color:var(--gray3)">Senior Technician · HQ</div></div>
+          <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--green)">92</div><div style="font-size:10px;color:var(--gray3)">Score</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;font-size:11px;text-align:center">
+          <div style="padding:10px;border-right:1px solid var(--gray1)"><div style="font-weight:700;font-size:15px">48</div><div style="color:var(--gray3)">Installations</div></div>
+          <div style="padding:10px;border-right:1px solid var(--gray1)"><div style="font-weight:700;font-size:15px">45m</div><div style="color:var(--gray3)">Avg Time</div></div>
+          <div style="padding:10px"><div style="font-weight:700;font-size:15px;color:var(--green)">2%</div><div style="color:var(--gray3)">Return Rate</div></div>
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid var(--gray1)">
+          <div class="score-bar"><div class="score-fill" style="width:92%;background:var(--green)"></div></div>
+          <div style="font-size:11px;color:var(--gray3);margin-top:5px">Current field: ONU ×3, Router ×1</div>
+        </div>
+      </div>
+      <div class="panel" onclick="openModal('tech-view','Sohag Mia','78')" style="cursor:pointer">
+        <div style="display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--gray1)">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--blue-lt);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--blue-md)">SM</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600">Sohag Mia</div><div style="font-size:11px;color:var(--gray3)">Technician · Chittagong</div></div>
+          <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--blue-md)">78</div><div style="font-size:10px;color:var(--gray3)">Score</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;font-size:11px;text-align:center">
+          <div style="padding:10px;border-right:1px solid var(--gray1)"><div style="font-weight:700;font-size:15px">32</div><div style="color:var(--gray3)">Installations</div></div>
+          <div style="padding:10px;border-right:1px solid var(--gray1)"><div style="font-weight:700;font-size:15px">62m</div><div style="color:var(--gray3)">Avg Time</div></div>
+          <div style="padding:10px"><div style="font-weight:700;font-size:15px;color:var(--amber)">8%</div><div style="color:var(--gray3)">Return Rate</div></div>
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid var(--gray1)">
+          <div class="score-bar"><div class="score-fill" style="width:78%;background:var(--blue-md)"></div></div>
+          <div style="font-size:11px;color:var(--gray3);margin-top:5px">Current field: ONU ×2, Switch ×1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ REPORTS PAGE ══ -->
+  <div class="page" id="page-reports">
+    <div><div class="section-title">Reports & Analytics</div><div class="section-sub">Generate, filter and export all inventory reports</div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <div class="panel" style="cursor:pointer" onclick="showToast('Stock Report generating...','info')"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;background:var(--green-lt);border-radius:10px;display:flex;align-items:center;justify-content:center"><i class="ti ti-package" style="color:var(--green);font-size:20px"></i></div><div><div style="font-size:13px;font-weight:600">Stock Report</div><div style="font-size:11px;color:var(--gray3)">All stores · Real-time</div></div><button class="btn btn-secondary" style="margin-left:auto;padding:5px 12px;font-size:11px">Export</button></div></div>
+      <div class="panel" style="cursor:pointer" onclick="showToast('Issue Report generating...','info')"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;background:var(--blue-lt);border-radius:10px;display:flex;align-items:center;justify-content:center"><i class="ti ti-send" style="color:var(--blue-md);font-size:20px"></i></div><div><div style="font-size:13px;font-weight:600">Issue Report</div><div style="font-size:11px;color:var(--gray3)">Technician-wise</div></div><button class="btn btn-secondary" style="margin-left:auto;padding:5px 12px;font-size:11px">Export</button></div></div>
+      <div class="panel" style="cursor:pointer" onclick="showToast('Purchase Report generating...','info')"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;background:var(--purple-lt);border-radius:10px;display:flex;align-items:center;justify-content:center"><i class="ti ti-shopping-cart" style="color:var(--purple);font-size:20px"></i></div><div><div style="font-size:13px;font-weight:600">Purchase Report</div><div style="font-size:11px;color:var(--gray3)">Supplier-wise</div></div><button class="btn btn-secondary" style="margin-left:auto;padding:5px 12px;font-size:11px">Export</button></div></div>
+      <div class="panel" style="cursor:pointer" onclick="showToast('Asset Report generating...','info')"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;background:var(--orange-lt);border-radius:10px;display:flex;align-items:center;justify-content:center"><i class="ti ti-cube" style="color:var(--orange);font-size:20px"></i></div><div><div style="font-size:13px;font-weight:600">Asset Report</div><div style="font-size:11px;color:var(--gray3)">Lifecycle status</div></div><button class="btn btn-secondary" style="margin-left:auto;padding:5px 12px;font-size:11px">Export</button></div></div>
+      <div class="panel" style="cursor:pointer" onclick="showToast('Wastage Report generating...','info')"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;background:var(--red-lt);border-radius:10px;display:flex;align-items:center;justify-content:center"><i class="ti ti-trash" style="color:var(--red);font-size:20px"></i></div><div><div style="font-size:13px;font-weight:600">Wastage Report</div><div style="font-size:11px;color:var(--gray3)">Scrap & damage</div></div><button class="btn btn-secondary" style="margin-left:auto;padding:5px 12px;font-size:11px">Export</button></div></div>
+      <div class="panel" style="cursor:pointer" onclick="showToast('Warranty Report generating...','info')"><div class="panel-body" style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;background:var(--amber-lt);border-radius:10px;display:flex;align-items:center;justify-content:center"><i class="ti ti-shield-check" style="color:var(--amber);font-size:20px"></i></div><div><div style="font-size:13px;font-weight:600">Warranty Report</div><div style="font-size:11px;color:var(--gray3)">Expiry tracking</div></div><button class="btn btn-secondary" style="margin-left:auto;padding:5px 12px;font-size:11px">Export</button></div></div>
+    </div>
+  </div>
+
+  <!-- ══ CUSTOMERS PAGE ══ -->
+  <div class="page" id="page-customers">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div><div class="section-title">Customer Asset View</div><div class="section-sub">Each customer's installed devices and history</div></div><button class="btn btn-primary" onclick="openModal('add-customer')"><i class="ti ti-plus" style="font-size:14px"></i> Add Customer</button></div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Customer ID</th><th>Name</th><th>Zone</th><th>Current Device</th><th>Serial / MAC</th><th>Install Date</th><th>Technician</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><strong>CUS-2026-001</strong></td><td>Karim Ahmed</td><td>Banani</td><td>ZTE F660 ONU</td><td style="font-family:monospace;font-size:11px">48:57:DD:A1:12:C4</td><td>24 Jun 2026</td><td>Rakib Hossain</td><td><span class="bdg bdg-green">Active</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="showToast('Customer asset history loaded','info')">History</button></td></tr>
+          <tr><td><strong>CUS-2026-002</strong></td><td>Hasan Mahmud</td><td>Gulshan</td><td>D-Link Switch</td><td style="font-family:monospace;font-size:11px">48:8F:2E:B3:44:D1</td><td>22 Jun 2026</td><td>Sohag Mia</td><td><span class="bdg bdg-green">Active</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="showToast('Customer asset history loaded','info')">History</button></td></tr>
+          <tr><td><strong>CUS-2026-003</strong></td><td>Rahman Ali</td><td>Mirpur</td><td style="color:var(--red)">— (Returned)</td><td>—</td><td>—</td><td>—</td><td><span class="bdg bdg-red">Disconnected</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="showToast('History loaded','info')">History</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ SUPPLIERS PAGE ══ -->
+  <div class="page" id="page-suppliers">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div><div class="section-title">Suppliers</div></div><button class="btn btn-primary" onclick="openModal('add-supplier')"><i class="ti ti-plus" style="font-size:14px"></i> Add Supplier</button></div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Supplier</th><th>Contact</th><th>Phone</th><th>Total Supply</th><th>Return Rate</th><th>Delivery Avg</th><th>Score</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Dhaka Tech Ltd</strong></td><td>Arif Hossain</td><td>01711-234567</td><td>৳ 2,40,000</td><td style="color:var(--green)">8%</td><td>2 days</td><td><span class="bdg bdg-green">88/100</span></td><td><span class="bdg bdg-green">Active</span></td></tr>
+          <tr><td><strong>Network House</strong></td><td>Mostak Ahmed</td><td>01811-345678</td><td>৳ 1,85,000</td><td style="color:var(--green)">5%</td><td>3 days</td><td><span class="bdg bdg-blue">82/100</span></td><td><span class="bdg bdg-green">Active</span></td></tr>
+          <tr><td><strong>Fiber Corp BD</strong></td><td>Raju Sarker</td><td>01911-456789</td><td>৳ 98,000</td><td style="color:var(--red)">40%</td><td>5 days</td><td><span class="bdg bdg-red">34/100</span></td><td><span class="bdg bdg-red">Flagged</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ STORES PAGE ══ -->
+  <div class="page" id="page-stores">
+    <div><div class="section-title">Stores / Warehouse</div><div class="section-sub">Stock levels across all branches and POPs</div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <div class="panel" style="border-top:3px solid var(--blue-md)"><div class="panel-body"><div style="font-size:13px;font-weight:600;margin-bottom:10px">HQ — Dhaka</div><div style="display:flex;flex-direction:column;gap:5px;font-size:12px"><div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">ONU/ONT</span><span style="color:var(--red);font-weight:600">15 ⚠</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">SFP Module</span><span style="color:var(--red);font-weight:600">4 ⚠</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Drop Cable</span><span>12,450M</span></div></div><div style="font-size:11px;color:var(--gray3);margin-top:8px;border-top:1px solid var(--gray1);padding-top:6px">Manager: Rafiq Ahmed</div></div></div>
+      <div class="panel" style="border-top:3px solid var(--red)"><div class="panel-body"><div style="font-size:13px;font-weight:600;margin-bottom:10px">Chittagong POP</div><div style="display:flex;flex-direction:column;gap:5px;font-size:12px"><div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">ONU/ONT</span><span style="color:var(--red);font-weight:600">3 ⚠</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Splitter</span><span>22</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Drop Cable</span><span>2,800M</span></div></div><div style="font-size:11px;color:var(--gray3);margin-top:8px;border-top:1px solid var(--gray1);padding-top:6px">Manager: Kamal Hossain</div></div></div>
+      <div class="panel" style="border-top:3px solid var(--green)"><div class="panel-body"><div style="font-size:13px;font-weight:600;margin-bottom:10px">Sylhet POP</div><div style="display:flex;flex-direction:column;gap:5px;font-size:12px"><div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">ONU/ONT</span><span>18</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Splitter</span><span>45</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Drop Cable</span><span>8,000M</span></div></div><div style="font-size:11px;color:var(--gray3);margin-top:8px;border-top:1px solid var(--gray1);padding-top:6px">Manager: Ruhul Amin</div></div></div>
+    </div>
+  </div>
+
+  <!-- ══ INVOICES PAGE ══ -->
+  <div class="page" id="page-invoices">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div><div class="section-title">Invoices</div></div><button class="btn btn-primary" onclick="openModal('new-purchase')"><i class="ti ti-plus" style="font-size:14px"></i> New Invoice</button></div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Invoice No</th><th>Customer</th><th>Item</th><th>Amount</th><th>Payment</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><strong>INV-2026-018</strong></td><td>Hasan Mahmud</td><td>D-Link Switch (Sale)</td><td>৳ 5,500</td><td>Cash</td><td>22 Jun</td><td><span class="bdg bdg-green">Paid</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="showToast('Invoice printing...','info')">Print</button></td></tr>
+          <tr><td><strong>INV-2026-017</strong></td><td>Karim Ahmed</td><td>Device Replacement</td><td>৳ 850</td><td>bKash</td><td>20 Jun</td><td><span class="bdg bdg-green">Paid</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="showToast('Invoice printing...','info')">Print</button></td></tr>
+          <tr><td><strong>INV-2026-016</strong></td><td>Rahman Ali</td><td>Router (Sale)</td><td>৳ 1,400</td><td>Bank</td><td>18 Jun</td><td><span class="bdg bdg-amber">Pending</span></td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="showToast('Invoice printing...','info')">Print</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ SETTINGS PAGE ══ -->
+  <div class="page" id="page-settings">
+    <div><div class="section-title">Settings</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="panel"><div class="panel-head"><div class="panel-title"><i class="ti ti-building"></i> Company Info</div></div><div class="panel-body">
+        <div class="form-group"><label>Company Name</label><input value="Fibernet BD"/></div>
+        <div class="form-group"><label>Address</label><input value="House 12, Road 4, Banani, Dhaka"/></div>
+        <div class="form-group"><label>Phone</label><input value="01700-000000"/></div>
+        <div class="form-actions" style="margin-top:4px;padding-top:8px"><button class="btn btn-primary" onclick="showToast('Saved!','info')">Save Changes</button></div>
+      </div></div>
+      <div class="panel"><div class="panel-head"><div class="panel-title"><i class="ti ti-bell"></i> Alert Settings</div></div><div class="panel-body">
+        <div class="form-group"><label>Low Stock Email Alert</label><select><option>Enabled</option><option>Disabled</option></select></div>
+        <div class="form-group"><label>Repair Aging Alert (days)</label><input type="number" value="7"/></div>
+        <div class="form-group"><label>Technician Hold Alert (days)</label><input type="number" value="30"/></div>
+        <div class="form-actions" style="margin-top:4px;padding-top:8px"><button class="btn btn-primary" onclick="showToast('Saved!','info')">Save Changes</button></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ══ AUDIT PAGE ══ -->
+  <div class="page" id="page-audit">
+    <div><div class="section-title">Audit Trail</div><div class="section-sub">Complete log of all system actions</div></div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Log ID</th><th>Action</th><th>Module</th><th>Details</th><th>User</th><th>IP</th><th>Timestamp</th></tr></thead>
+        <tbody>
+          <tr><td>LOG-00881</td><td><span class="bdg bdg-blue">Purchase</span></td><td>Product In</td><td>PIN-2026-00048 — ZTE F660 ONU ×50</td><td>Rafiq Ahmed</td><td>192.168.1.10</td><td>24 Jun 02:35 PM</td></tr>
+          <tr><td>LOG-00880</td><td><span class="bdg bdg-green">Issue</span></td><td>Product Out</td><td>ISS-2026-0154 — Technician Rakib</td><td>Rafiq Ahmed</td><td>192.168.1.10</td><td>24 Jun 01:10 PM</td></tr>
+          <tr><td>LOG-00879</td><td><span class="bdg bdg-orange">Return</span></td><td>Lifecycle</td><td>ONU-00125 returned — Faulty</td><td>Rakib Hossain</td><td>192.168.1.22</td><td>24 Jun 11:20 AM</td></tr>
+          <tr><td>LOG-00878</td><td><span class="bdg bdg-purple">Repair</span></td><td>Lifecycle</td><td>REP-2026-0061 completed</td><td>Store Manager</td><td>192.168.1.10</td><td>23 Jun 05:45 PM</td></tr>
+          <tr><td>LOG-00877</td><td><span class="bdg bdg-amber">Adjustment</span></td><td>Inventory</td><td>ADJ-2026-0032 — Stock reconcile</td><td>Rafiq Ahmed</td><td>192.168.1.10</td><td>23 Jun 03:30 PM</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+const PT={dashboard:'Dashboard','product-in':'Product In','product-out':'Product Request & Out',lifecycle:'Product Life Cycle',assets:'Assets / Inventory',reports:'Reports & Analytics',invoices:'Invoices',customers:'Customers',suppliers:'Suppliers',technicians:'Technicians',stores:'Stores / Warehouse',settings:'Settings',audit:'Audit Trail'};
+const PS={dashboard:'Overview of your inventory and assets','product-in':'Manage purchases and stock inflow','product-out':'Handle technician requests and approvals',lifecycle:'Track every asset from purchase to end of life',assets:'Real-time stock levels across all locations',reports:'Generate and export all reports',invoices:'Sales invoices and payment tracking',customers:'Customer device assignments and history',suppliers:'Supplier management and AI scoring',technicians:'Technician performance and field stock',stores:'Branch and warehouse stock',settings:'System configuration',audit:'Complete action log'};
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg)pg.classList.add('active');
+  if(el)el.classList.add('active');
+  document.getElementById('topbar-title').textContent=PT[id]||id;
+  document.getElementById('topbar-sub').textContent=PS[id]||'';
+}
+function showToast(msg,type='info'){
+  const t=document.getElementById('toast');
+  t.className='toast show toast-'+(type==='info'?'info':type==='error'?'error':'success');
+  document.getElementById('toast-icon').className='ti ti-'+(type==='info'?'info-circle':type==='error'?'x':'check');
+  document.getElementById('toast-msg').textContent=msg;
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3000);
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
+function openModal(type,a,b){
+  const fn=MODALS[type];if(!fn)return;
+  document.getElementById('modal-content').innerHTML=fn(a||'',b||'');
+  document.getElementById('modal-overlay').classList.add('open');
+}
+const MODALS={
+  'new-purchase':()=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-shopping-cart" style="color:var(--blue-md)"></i> New Purchase Entry</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div class="form-row"><div class="form-group"><label>Supplier *</label><select><option>Dhaka Tech Ltd</option><option>Network House</option><option>Fiber Corp BD</option></select></div><div class="form-group"><label>Store *</label><select><option>HQ — Dhaka</option><option>Chittagong POP</option><option>Sylhet POP</option></select></div></div>
+    <div class="form-row"><div class="form-group"><label>Invoice / PIN No. *</label><input placeholder="PIN-2026-00049"/></div><div class="form-group"><label>Purchase Date *</label><input type="date" value="2026-06-24"/></div></div>
+    <div class="form-row"><div class="form-group"><label>Product *</label><select><option>ZTE F660 ONU (Serialized)</option><option>SFP Module 1.25G</option><option>Drop Cable</option></select></div><div class="form-group"><label>Quantity</label><input type="number" placeholder="50"/></div></div>
+    <div class="form-group"><label>Unit Price (৳)</label><input type="number" placeholder="850"/></div>
+    <div class="form-group"><label>Serial / MAC Numbers (one per line)</label><textarea placeholder="48:57:DD:AA:01:01&#10;48:57:DD:AA:01:02&#10;..."></textarea></div>
+    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Purchase saved! Finance expense entry created.','info')">Save Purchase</button></div>`,
+  'new-issue':()=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-send" style="color:var(--green)"></i> New Issue</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div class="form-row"><div class="form-group"><label>Issue Type</label><select><option>Ticket-based</option><option>Direct Assign</option></select></div><div class="form-group"><label>Ticket / Ref No.</label><input placeholder="REQ-2026-0416"/></div></div>
+    <div class="form-row"><div class="form-group"><label>Technician *</label><select><option>Rakib Hossain</option><option>Sohag Mia</option></select></div><div class="form-group"><label>Product *</label><select><option>ZTE F660 ONU</option><option>SFP Module</option><option>Drop Cable</option></select></div></div>
+    <div class="form-row"><div class="form-group"><label>Quantity</label><input type="number" placeholder="1"/></div><div class="form-group"><label>Customer</label><input placeholder="Customer name..."/></div></div>
+    <div class="form-group"><label>📷 Photo Evidence (mandatory)</label><div style="border:2px dashed var(--gray2);border-radius:8px;padding:14px;text-align:center;cursor:pointer" onclick="showToast('Camera opened','info')"><i class="ti ti-camera" style="font-size:22px;display:block;margin-bottom:4px;color:var(--gray3)"></i><span style="font-size:12px;color:var(--gray3)">Upload or take photo</span></div></div>
+    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Issued! Geo-tagged and recorded.','info')">Issue Now</button></div>`,
+  'new-asset':()=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-cube-plus" style="color:var(--purple)"></i> Register New Asset</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div class="form-row"><div class="form-group"><label>Product *</label><select><option>ZTE F660 ONU</option><option>SFP Module</option></select></div><div class="form-group"><label>Serial / MAC *</label><input placeholder="48:57:DD:AA:01:01" style="font-family:monospace"/></div></div>
+    <div class="form-row"><div class="form-group"><label>Store *</label><select><option>HQ Store</option><option>Chittagong POP</option></select></div><div class="form-group"><label>Warranty (months)</label><input type="number" placeholder="12"/></div></div>
+    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Asset registered!','info')">Register</button></div>`,
+  'add-customer':()=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-user-plus" style="color:var(--blue-md)"></i> Add Customer</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div class="form-row"><div class="form-group"><label>Customer Name *</label><input placeholder="Full name..."/></div><div class="form-group"><label>Phone</label><input placeholder="01X-XXXXXXXX"/></div></div>
+    <div class="form-row"><div class="form-group"><label>Zone</label><select><option>Banani</option><option>Gulshan</option><option>Mirpur</option><option>Dhanmondi</option></select></div><div class="form-group"><label>Connection Type</label><select><option>FTTH</option><option>WiMax</option></select></div></div>
+    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Customer added!','info')">Save</button></div>`,
+  'add-supplier':()=>`<div class="modal-head"><div class="modal-title">Add Supplier</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div class="form-group"><label>Supplier Name *</label><input placeholder="Company name..."/></div>
+    <div class="form-row"><div class="form-group"><label>Contact Person</label><input placeholder="Name..."/></div><div class="form-group"><label>Phone</label><input placeholder="01X-XXXXXXXX"/></div></div>
+    <div class="form-group"><label>Payment Terms</label><select><option>Cash on Delivery</option><option>Credit 15 days</option><option>Credit 30 days</option></select></div>
+    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Supplier added!','info')">Save</button></div>`,
+  'tech-view':(name,score)=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-user"></i> ${name} — Performance Report</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div style="background:var(--blue-lt);border-radius:10px;padding:14px;margin-bottom:14px;display:flex;align-items:center;gap:14px">
+      <div style="text-align:center"><div style="font-size:38px;font-weight:700;color:${parseInt(score)>80?'var(--green)':'var(--blue-md)'}">${score}</div><div style="font-size:11px;color:var(--gray3)">AI Score</div></div>
+      <div style="flex:1;font-size:12px;display:flex;flex-direction:column;gap:5px">
+        <div>Install speed: <strong style="color:var(--green)">${parseInt(score)>80?'Excellent':'Good'}</strong></div>
+        <div>Return rate: <strong style="color:${parseInt(score)>80?'var(--green)':'var(--amber)'}">${parseInt(score)>80?'2% (Low)':'8% (Medium)'}</strong></div>
+        <div>Hold compliance: <strong style="color:var(--green)">Compliant</strong></div>
+      </div>
+    </div>
+    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="closeModal();showToast('Return request sent!','info')">Request Return</button></div>`,
+};
+const ASSETS={
+  'ONU-00125':{name:'ZTE F660 ONU',mac:'48:57:DD:A3:21:F0',status:'In Repair',statusCls:'bdg-amber',store:'HQ',warranty:'Expired',events:[
+    {date:'24 Jun 2026',color:'#DC2626',text:'Asset Returned — Faulty',sub:'Customer: Rahman, Mirpur · Photo uploaded'},
+    {date:'20 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Rahman Ali, Mirpur · Ticket REQ-2026-0380 · Geo-tagged'},
+    {date:'20 Jun 2026',color:'#2563EB',text:'Issued to Technician',sub:'Sohag Mia · ISS-2026-0142'},
+    {date:'18 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'PIN-2026-00041 · Dhaka Tech Ltd · CSV Import'},
+  ]},
+  'ONU-00124':{name:'ZTE F660 ONU',mac:'48:57:DD:A1:12:C4',status:'Active',statusCls:'bdg-green',store:'HQ',warranty:'Valid — Jun 2028',events:[
+    {date:'24 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Karim Ahmed, Banani · Ticket REQ-2026-0415'},
+    {date:'24 Jun 2026',color:'#2563EB',text:'Issued to Technician',sub:'Rakib Hossain · Barcode scanned'},
+    {date:'24 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'PIN-2026-00048 · Dhaka Tech Ltd'},
+  ]},
+  '48:57:DD:A3:21:F0':{name:'ZTE F660 ONU',mac:'48:57:DD:A3:21:F0',status:'In Repair',statusCls:'bdg-amber',store:'HQ',warranty:'Expired',events:[
+    {date:'24 Jun 2026',color:'#DC2626',text:'Asset Returned — Faulty',sub:'Customer: Rahman Ali · In Repair — REP-2026-0062'},
+    {date:'20 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Rahman Ali, Mirpur · Ticket REQ-2026-0380'},
+    {date:'18 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'Dhaka Tech Ltd · CSV Import'},
+  ]},
+  '48:57:DD:A1:12:C4':{name:'ZTE F660 ONU',mac:'48:57:DD:A1:12:C4',status:'Active',statusCls:'bdg-green',store:'HQ',warranty:'Valid — Jun 2028',events:[
+    {date:'24 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Karim Ahmed, Banani'},
+    {date:'24 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'PIN-2026-00048 · Dhaka Tech Ltd'},
+  ]},
+};
+function doAssetSearch(){
+  const q=(document.getElementById('asset-search').value||'').trim().toUpperCase();
+  const r=document.getElementById('asset-result');
+  if(!q){r.innerHTML='';return;}
+  const key=Object.keys(ASSETS).find(k=>k.toUpperCase()===q||k.toUpperCase().includes(q));
+  if(!key){r.innerHTML=`<div class="panel" style="padding:20px;text-align:center;color:var(--red)"><i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:8px"></i>Asset not found.</div>`;return;}
+  const d=ASSETS[key];
+  r.innerHTML=`<div class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--gray1)">
+      <div><div style="font-size:14px;font-weight:700">${d.name} — ${key}</div><div style="font-family:monospace;font-size:11px;color:var(--gray3);margin-top:2px">MAC: ${d.mac}</div></div>
+      <span class="bdg ${d.statusCls}" style="font-size:11px;padding:4px 14px">${d.status}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--gray1)">
+      <div style="padding:12px 16px;border-right:1px solid var(--gray1)"><div style="font-size:10px;color:var(--gray3);text-transform:uppercase;font-weight:600;margin-bottom:3px">Store</div><div style="font-size:13px;font-weight:600">${d.store}</div></div>
+      <div style="padding:12px 16px;border-right:1px solid var(--gray1)"><div style="font-size:10px;color:var(--gray3);text-transform:uppercase;font-weight:600;margin-bottom:3px">Warranty</div><div style="font-size:13px;font-weight:600">${d.warranty}</div></div>
+      <div style="padding:12px 16px"><div style="font-size:10px;color:var(--gray3);text-transform:uppercase;font-weight:600;margin-bottom:3px">Events</div><div style="font-size:13px;font-weight:600">${d.events.length}</div></div>
+    </div>
+    <div style="padding:14px 16px">
+      <div style="font-size:12px;font-weight:600;margin-bottom:12px">Lifecycle Timeline</div>
+      <div style="position:relative;padding-left:20px">
+        <div style="position:absolute;left:7px;top:0;bottom:0;width:1.5px;background:var(--gray2)"></div>
+        ${d.events.map(e=>`<div style="position:relative;margin-bottom:14px">
+          <div style="position:absolute;left:-16px;top:3px;width:10px;height:10px;border-radius:50%;background:${e.color};border:2px solid #fff;box-shadow:0 0 0 1.5px ${e.color}"></div>
+          <div style="font-size:10px;color:var(--gray3)">${e.date}</div>
+          <div style="font-size:12px;font-weight:600;color:var(--gray6)">${e.text}</div>
+          <div style="font-size:11px;color:var(--gray3)">${e.sub}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+  showToast('Asset found: '+d.name,'info');
+}
+</script>
+</body>
+</html>
