@@ -266,6 +266,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-siz
     <div class="nav-item" onclick="showPage('suppliers',this)"><div class="nav-left"><i class="ti ti-building-store"></i> Suppliers</div></div>
     <div class="nav-item" onclick="showPage('technicians',this)"><div class="nav-left"><i class="ti ti-tool"></i> Technicians</div></div>
     <div class="nav-item" onclick="showPage('stores',this)"><div class="nav-left"><i class="ti ti-building-warehouse"></i> Stores / Warehouse</div></div>
+    <div class="nav-item" onclick="showPage('arm',this)" style="background:linear-gradient(135deg,#FEF2F2,#FFF7ED);border:1px solid #FED7AA;margin-top:4px"><div class="nav-left"><i class="ti ti-shield-exclamation" style="color:#EA580C"></i><b style="color:#9A3412">Asset Recovery</b></div><span style="background:linear-gradient(135deg,#DC2626,#EA580C);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px">ARM</span></div>
+    <div class="nav-item" onclick="showPage('arm-tickets',this)"><div class="nav-left"><i class="ti ti-ticket" style="color:#EA580C"></i> Recovery Tickets</div></div>
+    <div class="nav-item" onclick="showPage('arm-ai',this)"><div class="nav-left"><i class="ti ti-brain" style="color:#DC2626"></i> Recovery AI</div></div>
+    <div class="nav-item" onclick="showPage('automation',this)"><div class="nav-left"><i class="ti ti-bolt" style="color:#0F9E6E"></i> Smart Automation</div></div>
+    <div class="nav-item" onclick="showPage('zones',this)"><div class="nav-left"><i class="ti ti-map-pin" style="color:#7C3AED"></i> Zone Management</div></div>
+    <div class="nav-item" onclick="showPage('communications',this)"><div class="nav-left"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i> Communications</div></div>
     <div class="nav-item" onclick="showPage('settings',this)"><div class="nav-left"><i class="ti ti-settings"></i> Settings</div></div>
     <div class="nav-item" onclick="showPage('audit',this)"><div class="nav-left"><i class="ti ti-clipboard-list"></i> Audit Trail</div></div>
   </nav>
@@ -911,126 +917,691 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-siz
     </div>
   </div>
 
+    <!-- ══ ARM: ASSET RECOVERY DASHBOARD ══ -->
+    <div class="page" id="page-arm">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div>
+          <div class="section-title" style="display:flex;align-items:center;gap:8px">
+            <span style="width:32px;height:32px;background:linear-gradient(135deg,#DC2626,#EA580C);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-shield-exclamation" style="color:#fff;font-size:16px"></i></span>
+            Asset Recovery Management
+          </div>
+          <div class="section-sub">Automated field recovery — disconnect হলেই system নিজে কাজ শুরু করে</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" onclick="showPage('arm-tickets',document.querySelector('[onclick*=arm-tickets]'))"><i class="ti ti-ticket" style="font-size:14px"></i> All Tickets</button>
+          <button class="btn btn-primary" onclick="openModal('manual-recovery')"><i class="ti ti-plus" style="font-size:14px"></i> Manual Recovery</button>
+        </div>
+      </div>
+
+      <!-- AI Insight -->
+      <div style="background:linear-gradient(135deg,#FFF7ED,#FEF2F2);border:1px solid #FED7AA;border-radius:10px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px">
+        <div style="width:34px;height:34px;background:linear-gradient(135deg,#DC2626,#EA580C);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-brain" style="color:#fff;font-size:16px"></i></div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:#9A3412;margin-bottom:3px"><span style="background:linear-gradient(135deg,#DC2626,#EA580C);color:#fff;font-size:9px;font-weight:700;padding:1px 7px;border-radius:10px;margin-right:6px">AI ALERT</span>আজকের Recovery Summary</div>
+          <div style="font-size:11px;color:#C2410C;line-height:1.6">Technician Rakib আজকে Banani Zone এ installation এ যাচ্ছে — সেখানে <strong>৩টি pending recovery</strong> আছে। একই trip এ recover করা সম্ভব। &nbsp;|&nbsp; REC-2026-0041 এর deadline আজ — Escalation হবে ২ ঘণ্টায়। &nbsp;|&nbsp; এই মাসে ৳ ৮৪,০০০ এর asset pending recovery তে।</div>
+        </div>
+        <button class="btn" style="background:linear-gradient(135deg,#DC2626,#EA580C);color:#fff;font-size:11px;padding:6px 12px;flex-shrink:0" onclick="showPage('arm-ai',document.querySelector('[onclick*=arm-ai]'))">AI View →</button>
+      </div>
+
+      <!-- Stats -->
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px">
+        <div class="panel" style="border-top:3px solid #EA580C;cursor:pointer" onclick="showPage('arm-tickets',document.querySelector('[onclick*=arm-tickets]'))">
+          <div class="panel-body" style="text-align:center;padding:12px">
+            <div style="font-size:22px;font-weight:700;color:#EA580C">28</div>
+            <div style="font-size:10px;color:var(--gray3);margin-top:2px">Total Pending</div>
+            <div style="font-size:10px;color:var(--red);margin-top:2px">৳ 2,38,400 value</div>
+          </div>
+        </div>
+        <div class="panel" style="border-top:3px solid var(--amber);cursor:pointer">
+          <div class="panel-body" style="text-align:center;padding:12px">
+            <div style="font-size:22px;font-weight:700;color:var(--amber)">15</div>
+            <div style="font-size:10px;color:var(--gray3);margin-top:2px">0–7 Days</div>
+            <div style="font-size:10px;color:var(--amber);margin-top:2px">Normal</div>
+          </div>
+        </div>
+        <div class="panel" style="border-top:3px solid var(--orange);cursor:pointer">
+          <div class="panel-body" style="text-align:center;padding:12px">
+            <div style="font-size:22px;font-weight:700;color:var(--orange)">8</div>
+            <div style="font-size:10px;color:var(--gray3);margin-top:2px">8–15 Days</div>
+            <div style="font-size:10px;color:var(--orange);margin-top:2px">Warning</div>
+          </div>
+        </div>
+        <div class="panel" style="border-top:3px solid var(--red);cursor:pointer">
+          <div class="panel-body" style="text-align:center;padding:12px">
+            <div style="font-size:22px;font-weight:700;color:var(--red)">5</div>
+            <div style="font-size:10px;color:var(--gray3);margin-top:2px">15+ Days</div>
+            <div style="font-size:10px;color:var(--red);margin-top:2px">Critical</div>
+          </div>
+        </div>
+        <div class="panel" style="border-top:3px solid var(--green);cursor:pointer">
+          <div class="panel-body" style="text-align:center;padding:12px">
+            <div style="font-size:22px;font-weight:700;color:var(--green)">142</div>
+            <div style="font-size:10px;color:var(--gray3);margin-top:2px">Recovered (Month)</div>
+            <div style="font-size:10px;color:var(--green);margin-top:2px">৳ 11,20,000</div>
+          </div>
+        </div>
+        <div class="panel" style="border-top:3px solid var(--purple);cursor:pointer">
+          <div class="panel-body" style="text-align:center;padding:12px">
+            <div style="font-size:22px;font-weight:700;color:var(--purple)">84%</div>
+            <div style="font-size:10px;color:var(--gray3);margin-top:2px">Recovery Rate</div>
+            <div style="font-size:10px;color:var(--purple);margin-top:2px">↑ 12% vs last month</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px">
+        <!-- Pending Recoveries -->
+        <div class="panel" style="padding:0;overflow:hidden">
+          <div class="panel-head">
+            <div class="panel-title"><i class="ti ti-clock" style="color:var(--red)"></i> Critical Pending Recoveries</div>
+            <button class="panel-action" onclick="showPage('arm-tickets',document.querySelector('[onclick*=arm-tickets]'))">সব দেখুন →</button>
+          </div>
+          <table class="tbl">
+            <thead><tr><th>Recovery ID</th><th>Customer</th><th>Assets</th><th>Value</th><th>Days Pending</th><th>Technician</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>REC-2026-0041</strong></td>
+                <td>Karim Ahmed<br><span style="font-size:10px;color:var(--gray3)">Banani, Dhaka</span></td>
+                <td>ONU + 120m Cable</td>
+                <td style="color:var(--red);font-weight:600">৳ 3,450</td>
+                <td><span class="bdg bdg-red">15 Days ⚠</span></td>
+                <td>Rakib Hossain</td>
+                <td><span class="bdg bdg-amber">Pending</span></td>
+                <td><button class="btn btn-danger" style="padding:4px 10px;font-size:11px" onclick="openModal('recovery-detail','REC-2026-0041')">Escalate</button></td>
+              </tr>
+              <tr>
+                <td><strong>REC-2026-0038</strong></td>
+                <td>Hasan Mia<br><span style="font-size:10px;color:var(--gray3)">Mohakhali</span></td>
+                <td>ONU + Adapter</td>
+                <td style="color:var(--orange);font-weight:600">৳ 2,100</td>
+                <td><span class="bdg bdg-orange">9 Days</span></td>
+                <td>Jamal Uddin</td>
+                <td><span class="bdg bdg-blue">In Progress</span></td>
+                <td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="openModal('recovery-detail','REC-2026-0038')">Details</button></td>
+              </tr>
+              <tr>
+                <td><strong>REC-2026-0035</strong></td>
+                <td>Salam Khan<br><span style="font-size:10px;color:var(--gray3)">Mirpur</span></td>
+                <td>ONU + 80m Cable + Adapter</td>
+                <td style="color:var(--amber);font-weight:600">৳ 4,200</td>
+                <td><span class="bdg bdg-amber">6 Days</span></td>
+                <td>Sohag Mia</td>
+                <td><span class="bdg bdg-amber">Pending</span></td>
+                <td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="openModal('recovery-detail','REC-2026-0035')">Details</button></td>
+              </tr>
+              <tr>
+                <td><strong>REC-2026-0033</strong></td>
+                <td>Rahman Ali<br><span style="font-size:10px;color:var(--gray3)">Dhanmondi</span></td>
+                <td>ONU</td>
+                <td style="color:var(--gray4);font-weight:600">৳ 850</td>
+                <td><span class="bdg bdg-green">2 Days</span></td>
+                <td>Rakib Hossain</td>
+                <td><span class="bdg bdg-green">Collected</span></td>
+                <td><button class="btn btn-success" style="padding:4px 10px;font-size:11px" onclick="openModal('store-verify','REC-2026-0033')">Store Verify</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Technician Recovery Performance -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title"><i class="ti ti-trophy" style="color:var(--amber)"></i> Technician Recovery Rate</div></div>
+            <div class="panel-body" style="padding-top:8px">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600">Rakib Hossain</span><span style="font-size:11px;color:var(--green);font-weight:700">95%</span></div>
+                  <div class="score-bar"><div class="score-fill" style="width:95%;background:var(--green)"></div></div>
+                  <div style="font-size:10px;color:var(--gray3);margin-top:2px">55/58 recovered · 1 failed</div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600">Sohag Mia</span><span style="font-size:11px;color:var(--blue-md);font-weight:700">88%</span></div>
+                  <div class="score-bar"><div class="score-fill" style="width:88%;background:var(--blue-md)"></div></div>
+                  <div style="font-size:10px;color:var(--gray3);margin-top:2px">44/50 recovered · 3 pending</div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600">Jamal Uddin</span><span style="font-size:11px;color:var(--amber);font-weight:700">72%</span></div>
+                  <div class="score-bar"><div class="score-fill" style="width:72%;background:var(--amber)"></div></div>
+                  <div style="font-size:10px;color:var(--amber);margin-top:2px">26/36 recovered · 8 pending ⚠</div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600">Milon Roy</span><span style="font-size:11px;color:var(--red);font-weight:700">45%</span></div>
+                  <div class="score-bar"><div class="score-fill" style="width:45%;background:var(--red)"></div></div>
+                  <div style="font-size:10px;color:var(--red);margin-top:2px">9/20 recovered · HR flagged 🚨</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel" style="background:linear-gradient(135deg,#ECFDF5,#EBF5FF)">
+            <div class="panel-head"><div class="panel-title" style="color:#065F46"><i class="ti ti-coin" style="color:var(--green)"></i> এই মাসের সাশ্রয়</div></div>
+            <div class="panel-body" style="padding-top:8px">
+              <div style="font-size:28px;font-weight:700;color:var(--green);text-align:center">৳ ১১,২০,০০০</div>
+              <div style="font-size:11px;color:#065F46;text-align:center;margin-top:4px">ARM system না থাকলে হারিয়ে যেতো</div>
+              <div style="margin-top:10px;display:flex;flex-direction:column;gap:5px;font-size:11px">
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">ONU Recovered</span><span style="font-weight:600">৳ 7,22,500 (850 pcs)</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Cable Recovered</span><span style="font-weight:600">৳ 2,34,000 (13,000m)</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Adapter/Others</span><span style="font-weight:600">৳ 1,63,500</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ARM TICKETS ══ -->
+    <div class="page" id="page-arm-tickets">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div><div class="section-title">Recovery Tickets</div><div class="section-sub">সব recovery ticket — filter ও search করুন</div></div>
+        <div style="display:flex;gap:8px">
+          <select style="border:1px solid var(--gray2);border-radius:8px;padding:7px 10px;font-size:12px;background:var(--white);outline:none">
+            <option>All Status</option><option>Pending</option><option>In Progress</option><option>Collected</option><option>Verified</option><option>Failed</option>
+          </select>
+          <select style="border:1px solid var(--gray2);border-radius:8px;padding:7px 10px;font-size:12px;background:var(--white);outline:none">
+            <option>All Technicians</option><option>Rakib Hossain</option><option>Sohag Mia</option><option>Jamal Uddin</option>
+          </select>
+          <button class="btn btn-primary" onclick="openModal('manual-recovery')"><i class="ti ti-plus" style="font-size:14px"></i> New</button>
+        </div>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="tbl">
+          <thead><tr><th>Recovery ID</th><th>Customer</th><th>Zone</th><th>Assets</th><th>Total Value</th><th>Disconnect Date</th><th>Deadline</th><th>Technician</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><strong>REC-2026-0041</strong></td><td>Karim Ahmed</td><td>Banani</td><td>ONU + 120m Cable</td><td style="color:var(--red)">৳ 3,450</td><td>09 Jun</td><td style="color:var(--red)">16 Jun ⚠</td><td>Rakib</td><td><span class="bdg bdg-red">Overdue</span></td><td><button class="btn btn-danger" style="padding:3px 8px;font-size:11px" onclick="openModal('recovery-detail','REC-2026-0041')">View</button></td></tr>
+            <tr><td><strong>REC-2026-0040</strong></td><td>Faruk Islam</td><td>Gulshan</td><td>ONU + Adapter</td><td>৳ 2,100</td><td>10 Jun</td><td>17 Jun</td><td>Sohag</td><td><span class="bdg bdg-orange">Overdue</span></td><td><button class="btn btn-secondary" style="padding:3px 8px;font-size:11px" onclick="openModal('recovery-detail','REC-2026-0040')">View</button></td></tr>
+            <tr><td><strong>REC-2026-0038</strong></td><td>Hasan Mia</td><td>Mohakhali</td><td>ONU + Adapter</td><td>৳ 2,100</td><td>15 Jun</td><td>22 Jun</td><td>Jamal</td><td><span class="bdg bdg-blue">In Progress</span></td><td><button class="btn btn-secondary" style="padding:3px 8px;font-size:11px" onclick="openModal('recovery-detail','REC-2026-0038')">View</button></td></tr>
+            <tr><td><strong>REC-2026-0035</strong></td><td>Salam Khan</td><td>Mirpur</td><td>ONU + 80m Cable + Adapter</td><td>৳ 4,200</td><td>18 Jun</td><td>25 Jun</td><td>Sohag</td><td><span class="bdg bdg-amber">Pending</span></td><td><button class="btn btn-secondary" style="padding:3px 8px;font-size:11px" onclick="openModal('recovery-detail','REC-2026-0035')">View</button></td></tr>
+            <tr><td><strong>REC-2026-0033</strong></td><td>Rahman Ali</td><td>Dhanmondi</td><td>ONU</td><td>৳ 850</td><td>22 Jun</td><td>29 Jun</td><td>Rakib</td><td><span class="bdg bdg-green">Collected</span></td><td><button class="btn btn-success" style="padding:3px 8px;font-size:11px" onclick="openModal('store-verify','REC-2026-0033')">Verify</button></td></tr>
+            <tr><td><strong>REC-2026-0031</strong></td><td>Jabbar Mia</td><td>Uttara</td><td>ONU + 150m Cable</td><td>৳ 5,200</td><td>20 Jun</td><td>27 Jun</td><td>Rakib</td><td><span class="bdg" style="background:#ECFDF5;color:#065F46">Verified ✓</span></td><td><button class="btn btn-secondary" style="padding:3px 8px;font-size:11px" onclick="showToast('Completed recovery viewed','info')">View</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ ARM AI PAGE ══ -->
+    <div class="page" id="page-arm-ai">
+      <div><div class="section-title">AI Recovery Intelligence</div><div class="section-sub">Smart suggestions, route optimization এবং predictive analytics</div></div>
+
+      <!-- Nearby Recovery Opportunity -->
+      <div class="panel" style="background:linear-gradient(135deg,#FFF7ED,#FEF3C7);border-color:#FCD34D">
+        <div class="panel-head" style="border-color:#FCD34D">
+          <div class="panel-title" style="color:#92400E"><i class="ti ti-route" style="color:var(--amber)"></i> AI Route Optimization — আজকের Suggestion</div>
+          <span style="background:linear-gradient(135deg,#DC2626,#EA580C);color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px">LIVE AI</span>
+        </div>
+        <div class="panel-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid #FCD34D">
+              <div style="font-size:11px;font-weight:600;color:var(--amber);margin-bottom:8px">👷 Rakib Hossain — Banani Installation আছে</div>
+              <div style="font-size:12px;font-weight:600;color:var(--gray6);margin-bottom:6px">Nearby Recovery Opportunities:</div>
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:11px">
+                <div style="background:var(--amber-lt);border-radius:6px;padding:7px 9px"><div style="font-weight:600">Karim Ahmed — Banani</div><div style="color:var(--gray4)">ONU + 120m Cable · ৳ 3,450</div><div style="color:var(--amber)">Distance: 120m from installation</div></div>
+                <div style="background:var(--amber-lt);border-radius:6px;padding:7px 9px"><div style="font-weight:600">Farhan — Road 11, Banani</div><div style="color:var(--gray4)">ONU · ৳ 850</div><div style="color:var(--amber)">Distance: 300m</div></div>
+              </div>
+              <button class="btn btn-primary" style="width:100%;margin-top:10px;font-size:11px" onclick="showToast('Rakib কে notification পাঠানো হয়েছে!','info')">Notify Rakib</button>
+            </div>
+            <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid #FCD34D">
+              <div style="font-size:11px;font-weight:600;color:var(--blue-md);margin-bottom:8px">👷 Sohag Mia — Mirpur Installation আছে</div>
+              <div style="font-size:12px;font-weight:600;color:var(--gray6);margin-bottom:6px">Nearby Recovery:</div>
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:11px">
+                <div style="background:var(--blue-lt);border-radius:6px;padding:7px 9px"><div style="font-weight:600">Salam Khan — Mirpur 10</div><div style="color:var(--gray4)">ONU + 80m Cable · ৳ 4,200</div><div style="color:var(--blue-md)">Distance: 200m</div></div>
+              </div>
+              <button class="btn btn-primary" style="width:100%;margin-top:10px;font-size:11px" onclick="showToast('Sohag কে notification পাঠানো হয়েছে!','info')">Notify Sohag</button>
+            </div>
+            <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid #A7F3D0">
+              <div style="font-size:11px;font-weight:600;color:var(--green);margin-bottom:8px">💡 আজকের Potential Saving</div>
+              <div style="font-size:26px;font-weight:700;color:var(--green);text-align:center;margin:8px 0">৳ 8,500</div>
+              <div style="font-size:11px;color:var(--gray4);text-align:center">Extra trip না দিয়েই recover করা সম্ভব</div>
+              <div style="margin-top:10px;font-size:11px;display:flex;flex-direction:column;gap:4px">
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Assets to recover</span><span style="font-weight:600">4 items</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Extra time needed</span><span style="font-weight:600">~45 min</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Trip cost saved</span><span style="font-weight:600;color:var(--green)">৳ 400</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Predictive Analytics -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="panel" style="background:linear-gradient(135deg,#F5F3FF,#EBF5FF);border-color:#C4B5FD">
+          <div class="panel-head" style="border-color:#C4B5FD"><div class="panel-title" style="color:#4C1D95"><i class="ti ti-chart-line" style="color:var(--purple)"></i> AI Predictive Analytics</div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="background:#fff;border-radius:8px;padding:10px;border:1px solid #C4B5FD">
+                <div style="font-size:11px;font-weight:600;color:var(--purple);margin-bottom:3px">📊 এই মাসে disconnect forecast</div>
+                <div style="font-size:20px;font-weight:700;color:var(--gray6)">~45 customer</div>
+                <div style="font-size:11px;color:var(--gray4)">AI confidence: 87% · Based on last 6 months pattern</div>
+              </div>
+              <div style="background:#fff;border-radius:8px;padding:10px;border:1px solid #C4B5FD">
+                <div style="font-size:11px;font-weight:600;color:var(--purple);margin-bottom:3px">💰 Expected asset value at risk</div>
+                <div style="font-size:20px;font-weight:700;color:var(--red)">৳ 3,82,500</div>
+                <div style="font-size:11px;color:var(--gray4)">~45 ONU + cable estimate</div>
+              </div>
+              <div style="background:#fff;border-radius:8px;padding:10px;border:1px solid #A7F3D0">
+                <div style="font-size:11px;font-weight:600;color:var(--green);margin-bottom:3px">✅ Recoverable with current team</div>
+                <div style="font-size:20px;font-weight:700;color:var(--green)">৳ 3,21,300 (84%)</div>
+                <div style="font-size:11px;color:var(--gray4)">Based on team performance history</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title"><i class="ti ti-user-exclamation" style="color:var(--red)"></i> High-Risk Customers (AI Flag)</div></div>
+          <div class="panel-body" style="padding-top:8px">
+            <div style="font-size:11px;color:var(--gray4);margin-bottom:10px">AI detect করেছে — এরা disconnect হওয়ার সম্ভাবনা বেশি (৩০ দিনের মধ্যে)</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="background:var(--red-lt);border-radius:8px;padding:10px;border:1px solid #FECACA;display:flex;align-items:center;gap:10px">
+                <div style="flex:1"><div style="font-size:12px;font-weight:600">Jamal Hossain — Uttara</div><div style="font-size:11px;color:var(--gray4)">Bill overdue 45 days · ONU value: ৳ 850</div></div>
+                <span class="bdg bdg-red">High Risk</span>
+              </div>
+              <div style="background:var(--orange-lt);border-radius:8px;padding:10px;border:1px solid #FED7AA;display:flex;align-items:center;gap:10px">
+                <div style="flex:1"><div style="font-size:12px;font-weight:600">Nasrin Begum — Tejgaon</div><div style="font-size:11px;color:var(--gray4)">Bill overdue 30 days · ONU + Cable: ৳ 3,200</div></div>
+                <span class="bdg bdg-orange">Medium Risk</span>
+              </div>
+              <div style="background:var(--orange-lt);border-radius:8px;padding:10px;border:1px solid #FED7AA;display:flex;align-items:center;gap:10px">
+                <div style="flex:1"><div style="font-size:12px;font-weight:600">Abdur Rahman — Khilgaon</div><div style="font-size:11px;color:var(--gray4)">Complaint history high · ONU: ৳ 850</div></div>
+                <span class="bdg bdg-orange">Medium Risk</span>
+              </div>
+            </div>
+            <button class="btn" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#DC2626,#EA580C);color:#fff;font-size:11px" onclick="showToast('Pre-emptive recovery alert পাঠানো হয়েছে!','info')">Pre-emptive Action নিন</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SMART AUTOMATION PAGE ══ -->
+    <div class="page" id="page-automation">
+      <div><div class="section-title">Smart Automation Center</div><div class="section-sub">সব automated workflows — set করুন এবং ভুলে যান</div></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <!-- Auto Recovery Trigger -->
+        <div class="panel" style="border-top:3px solid var(--green)">
+          <div class="panel-head"><div class="panel-title"><i class="ti ti-bolt" style="color:var(--green)"></i> Auto Recovery Trigger</div><div style="width:40px;height:22px;background:var(--green);border-radius:20px;display:flex;align-items:center;padding:2px;cursor:pointer" onclick="showToast('Auto trigger active!','info')"><div style="width:18px;height:18px;background:#fff;border-radius:50%;margin-left:auto"></div></div></div>
+          <div class="panel-body">
+            <div style="font-size:11px;color:var(--gray5);line-height:1.7">
+              ✅ Customer disconnect হলে <strong>auto Recovery Ticket</strong> তৈরি হবে<br>
+              ✅ Asset list auto-populate হবে customer profile থেকে<br>
+              ✅ Zone অনুযায়ী technician auto-assign হবে<br>
+              ✅ Customer কে auto SMS যাবে
+            </div>
+            <div style="margin-top:10px;padding:10px;background:var(--gray1);border-radius:8px">
+              <div style="font-size:11px;font-weight:600;margin-bottom:5px">Trigger Settings</div>
+              <div style="font-size:11px;color:var(--gray4);display:flex;flex-direction:column;gap:4px">
+                <div style="display:flex;justify-content:space-between"><span>Recovery deadline</span><span style="font-weight:600">7 days</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Auto-assign method</span><span style="font-weight:600">Zone-based</span></div>
+                <div style="display:flex;justify-content:space-between"><span>SMS notification</span><span style="font-weight:600;color:var(--green)">Enabled</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Escalation Ladder -->
+        <div class="panel" style="border-top:3px solid var(--orange)">
+          <div class="panel-head"><div class="panel-title"><i class="ti ti-stairs-up" style="color:var(--orange)"></i> Auto Escalation Ladder</div><div style="width:40px;height:22px;background:var(--orange);border-radius:20px;display:flex;align-items:center;padding:2px;cursor:pointer"><div style="width:18px;height:18px;background:#fff;border-radius:50%;margin-left:auto"></div></div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;gap:10px;align-items:center">
+                <div style="width:28px;height:28px;background:var(--amber-lt);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--amber);flex-shrink:0">D3</div>
+                <div style="font-size:11px"><span style="font-weight:600">Day 3:</span> Technician কে SMS + App reminder</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div style="width:28px;height:28px;background:var(--orange-lt);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--orange);flex-shrink:0">D5</div>
+                <div style="font-size:11px"><span style="font-weight:600">Day 5:</span> Team Lead / Supervisor notification</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div style="width:28px;height:28px;background:var(--red-lt);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--red);flex-shrink:0">D7</div>
+                <div style="font-size:11px"><span style="font-weight:600">Day 7:</span> Manager এ escalate + score penalty</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div style="width:28px;height:28px;background:#4C1D9520;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--purple);flex-shrink:0">D14</div>
+                <div style="font-size:11px"><span style="font-weight:600">Day 14:</span> Admin + HR report — disciplinary action</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Smart Notifications -->
+        <div class="panel" style="border-top:3px solid var(--blue-md)">
+          <div class="panel-head"><div class="panel-title"><i class="ti ti-notification" style="color:var(--blue-md)"></i> Smart Notifications</div><div style="width:40px;height:22px;background:var(--blue-md);border-radius:20px;display:flex;align-items:center;padding:2px;cursor:pointer"><div style="width:18px;height:18px;background:#fff;border-radius:50%;margin-left:auto"></div></div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:7px;font-size:11px">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:7px;background:var(--gray1);border-radius:6px"><span>📱 Technician App Push</span><span class="bdg bdg-green">ON</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:7px;background:var(--gray1);border-radius:6px"><span>📧 Manager Email Digest</span><span class="bdg bdg-green">ON</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:7px;background:var(--gray1);border-radius:6px"><span>💬 SMS to Technician</span><span class="bdg bdg-green">ON</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:7px;background:var(--gray1);border-radius:6px"><span>🤖 AI Route Suggestion</span><span class="bdg bdg-green">ON</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:7px;background:var(--gray1);border-radius:6px"><span>📊 Weekly HR Report</span><span class="bdg bdg-blue">Weekly</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:7px;background:var(--gray1);border-radius:6px"><span>⚠ Overdue Alert</span><span class="bdg bdg-amber">Real-time</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Deposit Integration -->
+        <div class="panel" style="border-top:3px solid var(--purple)">
+          <div class="panel-head"><div class="panel-title"><i class="ti ti-lock" style="color:var(--purple)"></i> Security Deposit Integration</div></div>
+          <div class="panel-body">
+            <div style="font-size:11px;color:var(--gray5);line-height:1.7;margin-bottom:10px">
+              Customer disconnect হলে security deposit auto-hold হবে যতক্ষণ asset return না হয়।
+            </div>
+            <div style="background:var(--purple-lt);border-radius:8px;padding:10px;font-size:11px">
+              <div style="font-weight:600;color:var(--purple);margin-bottom:6px">Example Calculation:</div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span>Security Deposit</span><span style="font-weight:600">৳ 1,000</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span>ONU Value</span><span style="font-weight:600">৳ 850</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:3px;color:var(--red)"><span>Deposit Hold</span><span style="font-weight:600">৳ 850</span></div>
+              <div style="display:flex;justify-content:space-between;color:var(--green);border-top:1px solid #C4B5FD;padding-top:5px;margin-top:5px"><span>Refundable</span><span style="font-weight:600">৳ 150</span></div>
+            </div>
+            <div style="font-size:11px;color:var(--purple);margin-top:8px">ONU return দিলে → Full deposit refund auto-process হবে</div>
+          </div>
+        </div>
+
+        <!-- Fake Recovery Protection -->
+        <div class="panel" style="border-top:3px solid var(--red)">
+          <div class="panel-head"><div class="panel-title"><i class="ti ti-shield-lock" style="color:var(--red)"></i> Fake Recovery Protection</div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="background:var(--red-lt);border-radius:8px;padding:10px;border:1px solid #FECACA">
+                <div style="font-size:11px;font-weight:600;color:var(--red);margin-bottom:5px">3-Layer Verification System</div>
+                <div style="font-size:11px;color:var(--gray5);line-height:1.7">
+                  🔍 <strong>Layer 1:</strong> MAC Scan mandatory (camera)<br>
+                  📷 <strong>Layer 2:</strong> Photo + GPS proof<br>
+                  ✍️ <strong>Layer 3:</strong> Store Manager confirm
+                </div>
+              </div>
+              <div style="background:var(--amber-lt);border-radius:8px;padding:10px;font-size:11px">
+                <div style="font-weight:600;color:var(--amber);margin-bottom:4px">Mismatch হলে কী হবে:</div>
+                <div style="color:var(--gray5);line-height:1.7">
+                  ❌ MAC match না হলে → Hard block<br>
+                  ❌ Store receive না হলে → Incomplete<br>
+                  ❌ GPS mismatch → Auto flag<br>
+                  ❌ পরপর ৩ বার fail → HR escalate
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Partial Recovery Handling -->
+        <div class="panel" style="border-top:3px solid var(--amber)">
+          <div class="panel-head"><div class="panel-title"><i class="ti ti-git-branch" style="color:var(--amber)"></i> Partial Recovery Handling</div></div>
+          <div class="panel-body">
+            <div style="font-size:11px;color:var(--gray5);margin-bottom:10px">সব item একসাথে না পেলে partial recovery record করা যাবে। বাকিটা separate task হবে।</div>
+            <div style="background:var(--gray1);border-radius:8px;padding:10px;font-size:11px">
+              <div style="font-weight:600;margin-bottom:8px">Example — REC-2026-0035:</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div><span>ONU — ✅ Collected</span></div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div><span>80m Cable — ✅ Collected</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--red)"></div><span>Adapter — ❌ Missing (customer নেই)</span></div>
+              <div style="margin-top:8px;padding:6px;background:#fff;border-radius:6px;font-size:10px;color:var(--amber)">⚠ Adapter: Sub-task REC-2026-0035-B auto-created</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ WHATSAPP/SMS MODULE ══ -->
+    <div class="page" id="page-communications">
+      <div><div class="section-title">Communication Center</div><div class="section-sub">WhatsApp, SMS ও automated customer communications</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i> WhatsApp Templates</div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="border:1px solid var(--gray2);border-radius:8px;padding:12px">
+                <div style="font-size:11px;font-weight:600;color:var(--gray5);margin-bottom:6px">1. Disconnect Notice + Recovery Request</div>
+                <div style="background:#DCF8C6;border-radius:8px;padding:10px;font-size:11px;color:#1a1a1a;line-height:1.6">
+                  আসসালামু আলাইকুম {customer_name},<br><br>
+                  আপনার ISP connection disconnect হয়েছে। আমাদের নিম্নলিখিত assets আপনার কাছে রয়েছে:<br>
+                  • ONU Device (মডেল: {model})<br>
+                  • Drop Cable: {cable}m<br><br>
+                  আমাদের technician {technician_name} {date} তারিখে আসবেন। অনুগ্রহ করে সহযোগিতা করুন।
+                </div>
+                <button class="btn btn-secondary" style="margin-top:8px;font-size:11px;width:100%" onclick="showToast('Template saved!','info')">Edit Template</button>
+              </div>
+              <div style="border:1px solid var(--gray2);border-radius:8px;padding:12px">
+                <div style="font-size:11px;font-weight:600;color:var(--gray5);margin-bottom:6px">2. Recovery Reminder (Day 3)</div>
+                <div style="background:#DCF8C6;border-radius:8px;padding:10px;font-size:11px;color:#1a1a1a;line-height:1.6">
+                  {customer_name}, আমাদের technician আসতে পারেননি। {new_date} তারিখে আবার আসবেন। device ফেরত না দিলে security deposit হোল্ড থাকবে।
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title"><i class="ti ti-send" style="color:var(--blue-md)"></i> Auto-Send Log</div></div>
+          <div class="panel-body" style="padding-top:8px">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--gray1);border-radius:8px">
+                <div style="width:28px;height:28px;background:#DCF8C6;border-radius:6px;display:flex;align-items:center;justify-content:center"><i class="ti ti-brand-whatsapp" style="color:#25D366;font-size:14px"></i></div>
+                <div style="flex:1"><div style="font-size:12px;font-weight:600">Karim Ahmed</div><div style="font-size:10px;color:var(--gray3)">Recovery notice sent · REC-2026-0041</div></div>
+                <div style="font-size:10px;color:var(--gray3)">09 Jun 10:05 AM</div>
+                <span class="bdg bdg-green">Delivered</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--gray1);border-radius:8px">
+                <div style="width:28px;height:28px;background:#DCF8C6;border-radius:6px;display:flex;align-items:center;justify-content:center"><i class="ti ti-brand-whatsapp" style="color:#25D366;font-size:14px"></i></div>
+                <div style="flex:1"><div style="font-size:12px;font-weight:600">Hasan Mia</div><div style="font-size:10px;color:var(--gray3)">Day 3 reminder · REC-2026-0038</div></div>
+                <div style="font-size:10px;color:var(--gray3)">18 Jun 09:00 AM</div>
+                <span class="bdg bdg-green">Read ✓✓</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--gray1);border-radius:8px">
+                <div style="width:28px;height:28px;background:var(--amber-lt);border-radius:6px;display:flex;align-items:center;justify-content:center"><i class="ti ti-message" style="color:var(--amber);font-size:14px"></i></div>
+                <div style="flex:1"><div style="font-size:12px;font-weight:600">Salam Khan</div><div style="font-size:10px;color:var(--gray3)">SMS recovery notice · REC-2026-0035</div></div>
+                <div style="font-size:10px;color:var(--gray3)">18 Jun 08:30 AM</div>
+                <span class="bdg bdg-blue">Sent</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ZONE MANAGEMENT ══ -->
+    <div class="page" id="page-zones">
+      <div><div class="section-title">Zone & Area Management</div><div class="section-sub">Zone ভিত্তিক technician assignment ও stock distribution</div></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <div class="panel" style="border-top:3px solid var(--blue-md)">
+          <div class="panel-head"><div class="panel-title">Banani Zone</div><span class="bdg bdg-green">Active</span></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Total Customers</span><span style="font-weight:600">245</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Active Assets</span><span style="font-weight:600">241</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Pending Recovery</span><span style="font-weight:600;color:var(--amber)">3</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Assigned Technician</span><span style="font-weight:600">Rakib Hossain</span></div>
+            </div>
+            <div style="font-size:11px;color:var(--gray3);border-top:1px solid var(--gray1);padding-top:8px">Areas: Road 1-27, Kemal Ataturk Ave</div>
+          </div>
+        </div>
+        <div class="panel" style="border-top:3px solid var(--green)">
+          <div class="panel-head"><div class="panel-title">Mirpur Zone</div><span class="bdg bdg-green">Active</span></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Total Customers</span><span style="font-weight:600">412</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Active Assets</span><span style="font-weight:600">408</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Pending Recovery</span><span style="font-weight:600;color:var(--red)">8</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Assigned Technician</span><span style="font-weight:600">Sohag + Jamal</span></div>
+            </div>
+            <div style="font-size:11px;color:var(--gray3);border-top:1px solid var(--gray1);padding-top:8px">Areas: Mirpur 1, 2, 10, 11, 12, 13</div>
+          </div>
+        </div>
+        <div class="panel" style="border-top:3px solid var(--purple)">
+          <div class="panel-head"><div class="panel-title">Gulshan Zone</div><span class="bdg bdg-green">Active</span></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Total Customers</span><span style="font-weight:600">189</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Active Assets</span><span style="font-weight:600">186</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Pending Recovery</span><span style="font-weight:600;color:var(--amber)">2</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--gray4)">Assigned Technician</span><span style="font-weight:600">Rakib Hossain</span></div>
+            </div>
+            <div style="font-size:11px;color:var(--gray3);border-top:1px solid var(--gray1);padding-top:8px">Areas: Gulshan 1, 2, DOHS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 </div>
 
 <script>
-const PT={dashboard:'Dashboard','product-in':'Product In','product-out':'Product Request & Out',lifecycle:'Product Life Cycle',assets:'Assets / Inventory',reports:'Reports & Analytics',invoices:'Invoices',customers:'Customers',suppliers:'Suppliers',technicians:'Technicians',stores:'Stores / Warehouse',settings:'Settings',audit:'Audit Trail'};
-const PS={dashboard:'Overview of your inventory and assets','product-in':'Manage purchases and stock inflow','product-out':'Handle technician requests and approvals',lifecycle:'Track every asset from purchase to end of life',assets:'Real-time stock levels across all locations',reports:'Generate and export all reports',invoices:'Sales invoices and payment tracking',customers:'Customer device assignments and history',suppliers:'Supplier management and AI scoring',technicians:'Technician performance and field stock',stores:'Branch and warehouse stock',settings:'System configuration',audit:'Complete action log'};
+const PT={arm:'Asset Recovery','arm-tickets':'Recovery Tickets','arm-ai':'Recovery AI',automation:'Smart Automation',zones:'Zone Management',communications:'Communications',dashboard:'Dashboard','product-in':'Product In','product-out':'Product Request & Out',lifecycle:'Product Life Cycle',assets:'Assets / Inventory',reports:'Reports & Analytics',invoices:'Invoices',customers:'Customers',suppliers:'Suppliers',technicians:'Technicians',stores:'Stores / Warehouse',settings:'Settings',audit:'Audit Trail'};
+const PS={arm:'Automated asset recovery from disconnected customers','arm-tickets':'All recovery tickets','arm-ai':'AI-powered route optimization and predictions',automation:'Set automated workflows and forget',zones:'Zone-based technician assignment',communications:'WhatsApp and SMS automated messaging',dashboard:'Overview of your inventory and assets','product-in':'Manage purchases and stock inflow','product-out':'Handle technician requests and approvals',lifecycle:'Track every asset from purchase to end of life',assets:'Real-time stock levels across all locations',reports:'Generate and export all reports',invoices:'Sales invoices and payment tracking',customers:'Customer device assignments and history',suppliers:'Supplier management and AI scoring',technicians:'Technician performance and field stock',stores:'Branch and warehouse stock',settings:'System configuration',audit:'Complete action log'};
+
 function showPage(id,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const pg=document.getElementById('page-'+id);
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  var pg=document.getElementById('page-'+id);
   if(pg)pg.classList.add('active');
   if(el)el.classList.add('active');
-  document.getElementById('topbar-title').textContent=PT[id]||id;
-  document.getElementById('topbar-sub').textContent=PS[id]||'';
+  var t=document.getElementById('topbar-title');
+  var s=document.getElementById('topbar-sub');
+  if(t)t.textContent=PT[id]||id;
+  if(s)s.textContent=PS[id]||'';
 }
-function showToast(msg,type='info'){
-  const t=document.getElementById('toast');
+
+function showToast(msg,type){
+  type=type||'info';
+  var t=document.getElementById('toast');
   t.className='toast show toast-'+(type==='info'?'info':type==='error'?'error':'success');
   document.getElementById('toast-icon').className='ti ti-'+(type==='info'?'info-circle':type==='error'?'x':'check');
   document.getElementById('toast-msg').textContent=msg;
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3000);
+  clearTimeout(t._t);
+  t._t=setTimeout(function(){t.classList.remove('show');},3000);
 }
-function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
+
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+
 function openModal(type,a,b){
-  const fn=MODALS[type];if(!fn)return;
+  var fn=MODALS[type];
+  if(!fn){showToast('Modal: '+type+' not found','error');return;}
   document.getElementById('modal-content').innerHTML=fn(a||'',b||'');
   document.getElementById('modal-overlay').classList.add('open');
 }
-const MODALS={
-  'new-purchase':()=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-shopping-cart" style="color:var(--blue-md)"></i> New Purchase Entry</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
-    <div class="form-row"><div class="form-group"><label>Supplier *</label><select><option>Dhaka Tech Ltd</option><option>Network House</option><option>Fiber Corp BD</option></select></div><div class="form-group"><label>Store *</label><select><option>HQ — Dhaka</option><option>Chittagong POP</option><option>Sylhet POP</option></select></div></div>
-    <div class="form-row"><div class="form-group"><label>Invoice / PIN No. *</label><input placeholder="PIN-2026-00049"/></div><div class="form-group"><label>Purchase Date *</label><input type="date" value="2026-06-24"/></div></div>
-    <div class="form-row"><div class="form-group"><label>Product *</label><select><option>ZTE F660 ONU (Serialized)</option><option>SFP Module 1.25G</option><option>Drop Cable</option></select></div><div class="form-group"><label>Quantity</label><input type="number" placeholder="50"/></div></div>
-    <div class="form-group"><label>Unit Price (৳)</label><input type="number" placeholder="850"/></div>
-    <div class="form-group"><label>Serial / MAC Numbers (one per line)</label><textarea placeholder="48:57:DD:AA:01:01&#10;48:57:DD:AA:01:02&#10;..."></textarea></div>
-    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Purchase saved! Finance expense entry created.','info')">Save Purchase</button></div>`,
-  'new-issue':()=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-send" style="color:var(--green)"></i> New Issue</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
-    <div class="form-row"><div class="form-group"><label>Issue Type</label><select><option>Ticket-based</option><option>Direct Assign</option></select></div><div class="form-group"><label>Ticket / Ref No.</label><input placeholder="REQ-2026-0416"/></div></div>
-    <div class="form-row"><div class="form-group"><label>Technician *</label><select><option>Rakib Hossain</option><option>Sohag Mia</option></select></div><div class="form-group"><label>Product *</label><select><option>ZTE F660 ONU</option><option>SFP Module</option><option>Drop Cable</option></select></div></div>
-    <div class="form-row"><div class="form-group"><label>Quantity</label><input type="number" placeholder="1"/></div><div class="form-group"><label>Customer</label><input placeholder="Customer name..."/></div></div>
-    <div class="form-group"><label>📷 Photo Evidence (mandatory)</label><div style="border:2px dashed var(--gray2);border-radius:8px;padding:14px;text-align:center;cursor:pointer" onclick="showToast('Camera opened','info')"><i class="ti ti-camera" style="font-size:22px;display:block;margin-bottom:4px;color:var(--gray3)"></i><span style="font-size:12px;color:var(--gray3)">Upload or take photo</span></div></div>
-    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Issued! Geo-tagged and recorded.','info')">Issue Now</button></div>`,
-  'new-asset':()=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-cube-plus" style="color:var(--purple)"></i> Register New Asset</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
-    <div class="form-row"><div class="form-group"><label>Product *</label><select><option>ZTE F660 ONU</option><option>SFP Module</option></select></div><div class="form-group"><label>Serial / MAC *</label><input placeholder="48:57:DD:AA:01:01" style="font-family:monospace"/></div></div>
-    <div class="form-row"><div class="form-group"><label>Store *</label><select><option>HQ Store</option><option>Chittagong POP</option></select></div><div class="form-group"><label>Warranty (months)</label><input type="number" placeholder="12"/></div></div>
-    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Asset registered!','info')">Register</button></div>`,
-  'add-customer':()=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-user-plus" style="color:var(--blue-md)"></i> Add Customer</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
-    <div class="form-row"><div class="form-group"><label>Customer Name *</label><input placeholder="Full name..."/></div><div class="form-group"><label>Phone</label><input placeholder="01X-XXXXXXXX"/></div></div>
-    <div class="form-row"><div class="form-group"><label>Zone</label><select><option>Banani</option><option>Gulshan</option><option>Mirpur</option><option>Dhanmondi</option></select></div><div class="form-group"><label>Connection Type</label><select><option>FTTH</option><option>WiMax</option></select></div></div>
-    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Customer added!','info')">Save</button></div>`,
-  'add-supplier':()=>`<div class="modal-head"><div class="modal-title">Add Supplier</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
-    <div class="form-group"><label>Supplier Name *</label><input placeholder="Company name..."/></div>
-    <div class="form-row"><div class="form-group"><label>Contact Person</label><input placeholder="Name..."/></div><div class="form-group"><label>Phone</label><input placeholder="01X-XXXXXXXX"/></div></div>
-    <div class="form-group"><label>Payment Terms</label><select><option>Cash on Delivery</option><option>Credit 15 days</option><option>Credit 30 days</option></select></div>
-    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast('Supplier added!','info')">Save</button></div>`,
-  'tech-view':(name,score)=>`<div class="modal-head"><div class="modal-title"><i class="ti ti-user"></i> ${name} — Performance Report</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
-    <div style="background:var(--blue-lt);border-radius:10px;padding:14px;margin-bottom:14px;display:flex;align-items:center;gap:14px">
-      <div style="text-align:center"><div style="font-size:38px;font-weight:700;color:${parseInt(score)>80?'var(--green)':'var(--blue-md)'}">${score}</div><div style="font-size:11px;color:var(--gray3)">AI Score</div></div>
-      <div style="flex:1;font-size:12px;display:flex;flex-direction:column;gap:5px">
-        <div>Install speed: <strong style="color:var(--green)">${parseInt(score)>80?'Excellent':'Good'}</strong></div>
-        <div>Return rate: <strong style="color:${parseInt(score)>80?'var(--green)':'var(--amber)'}">${parseInt(score)>80?'2% (Low)':'8% (Medium)'}</strong></div>
-        <div>Hold compliance: <strong style="color:var(--green)">Compliant</strong></div>
-      </div>
-    </div>
-    <div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="closeModal();showToast('Return request sent!','info')">Request Return</button></div>`,
+
+var MODALS={};
+
+MODALS['new-purchase']=function(){
+  return '<div class="modal-head"><div class="modal-title"><i class="ti ti-shopping-cart" style="color:var(--blue-md)"></i> New Purchase Entry</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>'
+  +'<div class="form-row"><div class="form-group"><label>Supplier</label><select><option>Dhaka Tech Ltd</option><option>Network House</option><option>Fiber Corp BD</option></select></div><div class="form-group"><label>Store</label><select><option>HQ Store</option><option>Chittagong POP</option><option>Sylhet POP</option></select></div></div>'
+  +'<div class="form-row"><div class="form-group"><label>Invoice No.</label><input placeholder="PIN-2026-00049"/></div><div class="form-group"><label>Date</label><input type="date" value="2026-06-24"/></div></div>'
+  +'<div class="form-row"><div class="form-group"><label>Product</label><select><option>ZTE F660 ONU</option><option>SFP Module 1.25G</option><option>Drop Cable</option></select></div><div class="form-group"><label>Quantity</label><input type="number" placeholder="50"/></div></div>'
+  +'<div class="form-group"><label>Unit Price (৳)</label><input type="number" placeholder="850"/></div>'
+  +'<div class="form-group"><label>Serial / MAC (one per line)</label><textarea placeholder="48:57:DD:AA:01:01\n48:57:DD:AA:01:02"></textarea></div>'
+  +'<div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast(\'Purchase saved! Finance expense entry created.\',\'info\')">Save Purchase</button></div>';
 };
-const ASSETS={
-  'ONU-00125':{name:'ZTE F660 ONU',mac:'48:57:DD:A3:21:F0',status:'In Repair',statusCls:'bdg-amber',store:'HQ',warranty:'Expired',events:[
-    {date:'24 Jun 2026',color:'#DC2626',text:'Asset Returned — Faulty',sub:'Customer: Rahman, Mirpur · Photo uploaded'},
-    {date:'20 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Rahman Ali, Mirpur · Ticket REQ-2026-0380 · Geo-tagged'},
-    {date:'20 Jun 2026',color:'#2563EB',text:'Issued to Technician',sub:'Sohag Mia · ISS-2026-0142'},
-    {date:'18 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'PIN-2026-00041 · Dhaka Tech Ltd · CSV Import'},
+
+MODALS['new-issue']=function(){
+  return '<div class="modal-head"><div class="modal-title"><i class="ti ti-send" style="color:var(--green)"></i> New Issue</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>'
+  +'<div class="form-row"><div class="form-group"><label>Issue Type</label><select><option>Ticket-based</option><option>Direct Assign</option></select></div><div class="form-group"><label>Ticket No.</label><input placeholder="REQ-2026-0416"/></div></div>'
+  +'<div class="form-row"><div class="form-group"><label>Technician</label><select><option>Rakib Hossain</option><option>Sohag Mia</option></select></div><div class="form-group"><label>Product</label><select><option>ZTE F660 ONU</option><option>SFP Module</option><option>Drop Cable</option></select></div></div>'
+  +'<div class="form-row"><div class="form-group"><label>Quantity</label><input type="number" placeholder="1"/></div><div class="form-group"><label>Customer</label><input placeholder="Customer name..."/></div></div>'
+  +'<div class="form-group"><label>Photo Evidence (mandatory)</label><div style="border:2px dashed var(--gray2);border-radius:8px;padding:14px;text-align:center;cursor:pointer" onclick="showToast(\'Camera opened\',\'info\')"><i class="ti ti-camera" style="font-size:22px;display:block;margin-bottom:4px;color:var(--gray3)"></i><span style="font-size:12px;color:var(--gray3)">Upload or take photo</span></div></div>'
+  +'<div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast(\'Issued! Geo-tagged and recorded.\',\'info\')">Issue Now</button></div>';
+};
+
+MODALS['new-asset']=function(){
+  return '<div class="modal-head"><div class="modal-title"><i class="ti ti-cube-plus" style="color:var(--purple)"></i> Register New Asset</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>'
+  +'<div class="form-row"><div class="form-group"><label>Product</label><select><option>ZTE F660 ONU</option><option>SFP Module</option></select></div><div class="form-group"><label>Serial / MAC</label><input placeholder="48:57:DD:AA:01:01" style="font-family:monospace"/></div></div>'
+  +'<div class="form-row"><div class="form-group"><label>Store</label><select><option>HQ Store</option><option>Chittagong POP</option></select></div><div class="form-group"><label>Warranty (months)</label><input type="number" placeholder="12"/></div></div>'
+  +'<div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast(\'Asset registered!\',\'info\')">Register</button></div>';
+};
+
+MODALS['add-customer']=function(){
+  return '<div class="modal-head"><div class="modal-title"><i class="ti ti-user-plus" style="color:var(--blue-md)"></i> Add Customer</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>'
+  +'<div class="form-row"><div class="form-group"><label>Customer Name</label><input placeholder="Full name..."/></div><div class="form-group"><label>Phone</label><input placeholder="01X-XXXXXXXX"/></div></div>'
+  +'<div class="form-row"><div class="form-group"><label>Zone</label><select><option>Banani</option><option>Gulshan</option><option>Mirpur</option><option>Dhanmondi</option></select></div><div class="form-group"><label>Connection Type</label><select><option>FTTH</option><option>WiMax</option></select></div></div>'
+  +'<div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast(\'Customer added!\',\'info\')">Save</button></div>';
+};
+
+MODALS['add-supplier']=function(){
+  return '<div class="modal-head"><div class="modal-title">Add Supplier</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>'
+  +'<div class="form-group"><label>Supplier Name</label><input placeholder="Company name..."/></div>'
+  +'<div class="form-row"><div class="form-group"><label>Contact Person</label><input placeholder="Name..."/></div><div class="form-group"><label>Phone</label><input placeholder="01X-XXXXXXXX"/></div></div>'
+  +'<div class="form-group"><label>Payment Terms</label><select><option>Cash on Delivery</option><option>Credit 15 days</option><option>Credit 30 days</option></select></div>'
+  +'<div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="closeModal();showToast(\'Supplier added!\',\'info\')">Save</button></div>';
+};
+
+MODALS['manual-recovery']=function(){
+  return '<div class="modal-head"><div class="modal-title"><i class="ti ti-shield-exclamation" style="color:#EA580C"></i> Manual Recovery Ticket</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>'
+  +'<div style="background:linear-gradient(135deg,#FFF7ED,#FEF2F2);border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:#9A3412">Customer disconnect হলে system automatically recovery ticket তৈরি করে। Manual শুধু special case.</div>'
+  +'<div class="form-row"><div class="form-group"><label>Customer</label><input placeholder="Search customer..."/></div><div class="form-group"><label>Reason</label><select><option>Non-payment</option><option>Customer Request</option><option>Relocation</option></select></div></div>'
+  +'<div class="form-group"><label>Assets to Recover</label><div style="border:1px solid #E2E8F0;border-radius:8px;padding:10px;font-size:12px;display:flex;flex-direction:column;gap:6px"><label style="display:flex;gap:8px;align-items:center;font-weight:normal;text-transform:none;letter-spacing:0"><input type="checkbox" checked> ONU Device</label><label style="display:flex;gap:8px;align-items:center;font-weight:normal;text-transform:none;letter-spacing:0"><input type="checkbox" checked> Drop Cable</label><label style="display:flex;gap:8px;align-items:center;font-weight:normal;text-transform:none;letter-spacing:0"><input type="checkbox"> Adapter</label></div></div>'
+  +'<div class="form-row"><div class="form-group"><label>Technician</label><select><option>Rakib Hossain</option><option>Sohag Mia</option><option>Jamal Uddin</option></select></div><div class="form-group"><label>Deadline</label><input type="date" value="2026-07-01"/></div></div>'
+  +'<div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn" style="background:linear-gradient(135deg,#DC2626,#EA580C);color:#fff" onclick="closeModal();showToast(\'Recovery ticket created! Technician notified.\',\'info\')">Create Ticket</button></div>';
+};
+
+MODALS['recovery-detail']=function(id){
+  return '<div class="modal-head"><div class="modal-title"><i class="ti ti-shield-exclamation" style="color:#EA580C"></i> '+id+' — Details</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>'
+  +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px"><div><div class="sr-label">Customer</div><div class="sr-val">Karim Ahmed</div><div style="font-size:11px;color:#94A3B8">Banani, Road 11</div></div><div><div class="sr-label">Disconnect</div><div class="sr-val">09 Jun 2026</div></div><div><div class="sr-label">Status</div><span class="bdg bdg-red">Overdue 15 Days</span></div></div>'
+  +'<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:600;margin-bottom:8px">Assets:</div><div style="display:flex;flex-direction:column;gap:5px;font-size:11px"><div style="display:flex;justify-content:space-between;padding:7px;background:#F8F9FC;border-radius:6px"><span>ONU Device</span><span style="color:#DC2626;font-weight:600">Pending — ৳ 850</span></div><div style="display:flex;justify-content:space-between;padding:7px;background:#F8F9FC;border-radius:6px"><span>Drop Cable 120m</span><span style="color:#DC2626;font-weight:600">Pending — ৳ 2,160</span></div><div style="display:flex;justify-content:space-between;padding:7px;background:#F8F9FC;border-radius:6px"><span>Adapter</span><span style="color:#DC2626;font-weight:600">Pending — ৳ 440</span></div></div></div>'
+  +'<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:600;margin-bottom:8px">Escalation Log:</div><div style="font-size:11px;display:flex;flex-direction:column;gap:5px;padding-left:12px;border-left:2px solid #E2E8F0"><div><span style="font-size:10px;color:#94A3B8">09 Jun — </span>Ticket created, Rakib assigned</div><div><span style="font-size:10px;color:#94A3B8">12 Jun — </span>Day 3 SMS sent to Rakib</div><div><span style="font-size:10px;color:#D97706">14 Jun — </span>Supervisor notified</div><div><span style="font-size:10px;color:#DC2626">16 Jun — </span>Manager escalated, score -15 applied</div></div></div>'
+  +'<div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Close</button><button class="btn btn-danger" onclick="closeModal();showToast(\'Escalated to Admin!\',\'info\')">Escalate</button><button class="btn" style="background:linear-gradient(135deg,#DC2626,#EA580C);color:#fff" onclick="closeModal();showToast(\'Reassigned!\',\'info\')">Reassign Technician</button></div>';
+};
+
+MODALS['store-verify']=function(id){
+  return '<div class="modal-head"><div class="modal-title"><i class="ti ti-building-warehouse" style="color:#0F9E6E"></i> Store Verify — '+id+'</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>'
+  +'<div style="background:#E6F9F2;border-radius:8px;padding:10px;margin-bottom:14px;font-size:11px;color:#065F46">Technician collected করেছে। Store manager physically verify করুন।</div>'
+  +'<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:600;margin-bottom:8px">Verify Items:</div><div style="display:flex;flex-direction:column;gap:8px"><div style="border:1px solid #E2E8F0;border-radius:8px;padding:10px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;font-weight:600">ZTE F660 ONU</span><span style="font-family:monospace;font-size:11px;color:#94A3B8">48:57:DD:A1:12:C4</span></div><div style="display:flex;gap:8px"><select style="flex:1;border:1px solid #E2E8F0;border-radius:6px;padding:6px;font-size:11px"><option>Working — Good</option><option>Working — Minor Damage</option><option>For Repair</option><option>Dead — Scrap</option></select><button class="btn btn-success" style="font-size:11px;padding:6px 10px" onclick="showToast(\'MAC scanned!\',\'info\')"><i class="ti ti-scan"></i> Scan</button></div></div><div style="border:1px solid #E2E8F0;border-radius:8px;padding:10px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;font-weight:600">Drop Cable</span><span style="font-size:11px;color:#94A3B8">Expected: 120m</span></div><input type="number" placeholder="Actual received (m)" style="width:100%;border:1px solid #E2E8F0;border-radius:6px;padding:7px;font-size:11px"/></div></div></div>'
+  +'<div class="form-group"><label>Notes</label><textarea placeholder="Condition remarks..."></textarea></div>'
+  +'<div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-danger" onclick="closeModal();showToast(\'Rejected!\',\'info\')">Reject</button><button class="btn btn-success" onclick="closeModal();showToast(\'Verified! Stock updated!\',\'info\')">Verify and Add to Stock</button></div>';
+};
+
+MODALS['tech-view']=function(name,score){
+  var s=parseInt(score);
+  var color=s>80?'#0F9E6E':s>60?'#2563EB':s>50?'#D97706':'#DC2626';
+  var speedLabel=s>80?'Excellent':'Good';
+  var holdLabel=s>60?'Compliant':'Non-compliant';
+  var returnRate=s>80?'2%':s>60?'8%':'35%';
+  var returnLabel=s>70?'(Good)':'(High)';
+  return '<div class="modal-head"><div class="modal-title"><i class="ti ti-user"></i> '+name+' — Performance</div><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>'
+  +'<div style="background:var(--blue-lt);border-radius:8px;padding:14px;margin-bottom:14px;display:flex;align-items:center;gap:14px">'
+  +'<div style="text-align:center"><div style="font-size:38px;font-weight:700;color:'+color+'">'+score+'</div><div style="font-size:11px;color:var(--gray3)">AI Score</div></div>'
+  +'<div style="flex:1;font-size:12px;display:flex;flex-direction:column;gap:5px">'
+  +'<div>Install speed: <strong style="color:'+color+'">'+speedLabel+'</strong></div>'
+  +'<div>Hold compliance: <strong style="color:'+color+'">'+holdLabel+'</strong></div>'
+  +'<div>Return rate: <strong style="color:'+color+'">'+returnRate+' '+returnLabel+'</strong></div>'
+  +'</div></div>'
+  +'<div class="form-actions"><button class="btn btn-secondary" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="closeModal();showToast(\'Return request sent!\',\'info\')">Request Return</button></div>';
+};
+
+var ASSETS={
+  'ONU-00125':{name:'ZTE F660 ONU',mac:'48:57:DD:A3:21:F0',status:'In Repair',cls:'bdg-amber',store:'HQ Store',warranty:'Expired',events:[
+    {date:'24 Jun 2026',color:'#DC2626',text:'Asset Returned — Faulty',sub:'Customer: Rahman, Mirpur'},
+    {date:'20 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Rahman Ali, Mirpur — Ticket REQ-2026-0380'},
+    {date:'20 Jun 2026',color:'#2563EB',text:'Issued to Technician',sub:'Sohag Mia — ISS-2026-0142'},
+    {date:'18 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'PIN-2026-00041 — Dhaka Tech Ltd'}
   ]},
-  'ONU-00124':{name:'ZTE F660 ONU',mac:'48:57:DD:A1:12:C4',status:'Active',statusCls:'bdg-green',store:'HQ',warranty:'Valid — Jun 2028',events:[
-    {date:'24 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Karim Ahmed, Banani · Ticket REQ-2026-0415'},
-    {date:'24 Jun 2026',color:'#2563EB',text:'Issued to Technician',sub:'Rakib Hossain · Barcode scanned'},
-    {date:'24 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'PIN-2026-00048 · Dhaka Tech Ltd'},
+  'ONU-00124':{name:'ZTE F660 ONU',mac:'48:57:DD:A1:12:C4',status:'Active',cls:'bdg-green',store:'HQ Store',warranty:'Valid — Jun 2028',events:[
+    {date:'24 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Karim Ahmed, Banani — Ticket REQ-2026-0415'},
+    {date:'24 Jun 2026',color:'#2563EB',text:'Issued to Technician',sub:'Rakib Hossain'},
+    {date:'24 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'PIN-2026-00048 — Dhaka Tech Ltd'}
   ]},
-  '48:57:DD:A3:21:F0':{name:'ZTE F660 ONU',mac:'48:57:DD:A3:21:F0',status:'In Repair',statusCls:'bdg-amber',store:'HQ',warranty:'Expired',events:[
-    {date:'24 Jun 2026',color:'#DC2626',text:'Asset Returned — Faulty',sub:'Customer: Rahman Ali · In Repair — REP-2026-0062'},
-    {date:'20 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Rahman Ali, Mirpur · Ticket REQ-2026-0380'},
-    {date:'18 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'Dhaka Tech Ltd · CSV Import'},
+  '48:57:DD:A3:21:F0':{name:'ZTE F660 ONU',mac:'48:57:DD:A3:21:F0',status:'In Repair',cls:'bdg-amber',store:'HQ Store',warranty:'Expired',events:[
+    {date:'24 Jun 2026',color:'#DC2626',text:'Asset Returned — Faulty',sub:'Customer: Rahman Ali — In Repair REP-2026-0062'},
+    {date:'20 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Rahman Ali, Mirpur'},
+    {date:'18 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'Dhaka Tech Ltd — CSV Import'}
   ]},
-  '48:57:DD:A1:12:C4':{name:'ZTE F660 ONU',mac:'48:57:DD:A1:12:C4',status:'Active',statusCls:'bdg-green',store:'HQ',warranty:'Valid — Jun 2028',events:[
+  '48:57:DD:A1:12:C4':{name:'ZTE F660 ONU',mac:'48:57:DD:A1:12:C4',status:'Active',cls:'bdg-green',store:'HQ Store',warranty:'Valid — Jun 2028',events:[
     {date:'24 Jun 2026',color:'#0F9E6E',text:'Installed at Customer',sub:'Karim Ahmed, Banani'},
-    {date:'24 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'PIN-2026-00048 · Dhaka Tech Ltd'},
-  ]},
+    {date:'24 Jun 2026',color:'#64748B',text:'Received into Stock',sub:'PIN-2026-00048 — Dhaka Tech Ltd'}
+  ]}
 };
+
 function doAssetSearch(){
-  const q=(document.getElementById('asset-search').value||'').trim().toUpperCase();
-  const r=document.getElementById('asset-result');
+  var q=(document.getElementById('asset-search').value||'').trim().toUpperCase();
+  var r=document.getElementById('asset-result');
   if(!q){r.innerHTML='';return;}
-  const key=Object.keys(ASSETS).find(k=>k.toUpperCase()===q||k.toUpperCase().includes(q));
-  if(!key){r.innerHTML=`<div class="panel" style="padding:20px;text-align:center;color:var(--red)"><i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:8px"></i>Asset not found.</div>`;return;}
-  const d=ASSETS[key];
-  r.innerHTML=`<div class="panel">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--gray1)">
-      <div><div style="font-size:14px;font-weight:700">${d.name} — ${key}</div><div style="font-family:monospace;font-size:11px;color:var(--gray3);margin-top:2px">MAC: ${d.mac}</div></div>
-      <span class="bdg ${d.statusCls}" style="font-size:11px;padding:4px 14px">${d.status}</span>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--gray1)">
-      <div style="padding:12px 16px;border-right:1px solid var(--gray1)"><div style="font-size:10px;color:var(--gray3);text-transform:uppercase;font-weight:600;margin-bottom:3px">Store</div><div style="font-size:13px;font-weight:600">${d.store}</div></div>
-      <div style="padding:12px 16px;border-right:1px solid var(--gray1)"><div style="font-size:10px;color:var(--gray3);text-transform:uppercase;font-weight:600;margin-bottom:3px">Warranty</div><div style="font-size:13px;font-weight:600">${d.warranty}</div></div>
-      <div style="padding:12px 16px"><div style="font-size:10px;color:var(--gray3);text-transform:uppercase;font-weight:600;margin-bottom:3px">Events</div><div style="font-size:13px;font-weight:600">${d.events.length}</div></div>
-    </div>
-    <div style="padding:14px 16px">
-      <div style="font-size:12px;font-weight:600;margin-bottom:12px">Lifecycle Timeline</div>
-      <div style="position:relative;padding-left:20px">
-        <div style="position:absolute;left:7px;top:0;bottom:0;width:1.5px;background:var(--gray2)"></div>
-        ${d.events.map(e=>`<div style="position:relative;margin-bottom:14px">
-          <div style="position:absolute;left:-16px;top:3px;width:10px;height:10px;border-radius:50%;background:${e.color};border:2px solid #fff;box-shadow:0 0 0 1.5px ${e.color}"></div>
-          <div style="font-size:10px;color:var(--gray3)">${e.date}</div>
-          <div style="font-size:12px;font-weight:600;color:var(--gray6)">${e.text}</div>
-          <div style="font-size:11px;color:var(--gray3)">${e.sub}</div>
-        </div>`).join('')}
-      </div>
-    </div>
-  </div>`;
+  var key=null;
+  var keys=Object.keys(ASSETS);
+  for(var i=0;i<keys.length;i++){if(keys[i].toUpperCase().indexOf(q)>=0){key=keys[i];break;}}
+  if(!key){
+    r.innerHTML='<div class="panel" style="padding:20px;text-align:center;color:var(--red)"><i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:8px"></i>Asset not found.</div>';
+    return;
+  }
+  var d=ASSETS[key];
+  var eventsHtml='';
+  for(var i=0;i<d.events.length;i++){
+    var e=d.events[i];
+    eventsHtml+='<div style="position:relative;margin-bottom:12px"><div style="position:absolute;left:-16px;top:3px;width:10px;height:10px;border-radius:50%;background:'+e.color+';border:2px solid #fff;box-shadow:0 0 0 1.5px '+e.color+'"></div><div style="font-size:10px;color:var(--gray3)">'+e.date+'</div><div style="font-size:12px;font-weight:600">'+e.text+'</div><div style="font-size:11px;color:var(--gray3)">'+e.sub+'</div></div>';
+  }
+  r.innerHTML='<div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--gray1)"><div><div style="font-size:14px;font-weight:700">'+d.name+' — '+key+'</div><div style="font-family:monospace;font-size:11px;color:var(--gray3);margin-top:2px">MAC: '+d.mac+'</div></div><span class="bdg '+d.cls+'" style="font-size:11px;padding:4px 14px">'+d.status+'</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--gray1)"><div style="padding:12px 16px;border-right:1px solid var(--gray1)"><div style="font-size:10px;color:var(--gray3);text-transform:uppercase;font-weight:600;margin-bottom:3px">Store</div><div style="font-size:13px;font-weight:600">'+d.store+'</div></div><div style="padding:12px 16px;border-right:1px solid var(--gray1)"><div style="font-size:10px;color:var(--gray3);text-transform:uppercase;font-weight:600;margin-bottom:3px">Warranty</div><div style="font-size:13px;font-weight:600">'+d.warranty+'</div></div><div style="padding:12px 16px"><div style="font-size:10px;color:var(--gray3);text-transform:uppercase;font-weight:600;margin-bottom:3px">Events</div><div style="font-size:13px;font-weight:600">'+d.events.length+'</div></div></div><div style="padding:14px 16px"><div style="font-size:12px;font-weight:600;margin-bottom:12px">Lifecycle Timeline</div><div style="position:relative;padding-left:20px"><div style="position:absolute;left:7px;top:0;bottom:0;width:1.5px;background:var(--gray2)"></div>'+eventsHtml+'</div></div></div>';
   showToast('Asset found: '+d.name,'info');
 }
+
 </script>
 </body>
 </html>
